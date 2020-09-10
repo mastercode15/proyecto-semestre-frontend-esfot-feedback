@@ -3,6 +3,7 @@ import ArticleList from '../components/SubjectsList';
 import { useSubjectsList } from '../data/useSubjectsList';
 import ShowError from '../components/ShowError';
 
+
 const HomePage = () => {
   const articles = useSubjectsList();
 
@@ -14,15 +15,8 @@ const HomePage = () => {
       </h1>
 
       <p>Este es el contenido de la página principal.</p>
+        <h1>ESFOT Feedback</h1>
 
-      <h2>Lista de Artículos</h2>
-      {
-        articles.isLoading
-          ? 'Cargando...'
-          : articles.isError
-          ? <ShowError error={ articles.isError } />
-          : <ArticleList articles={ articles.articles } />
-      }
     </>
   );
 };
