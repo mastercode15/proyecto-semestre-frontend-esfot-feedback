@@ -107,36 +107,27 @@ body {
     margin: 30px 0 20px;
 }
 .ant-menu-item{
-    font-size: 20px;
+    font-size: 15px;
 }
 
-.teacherContent {
-    overflow: initial;
-    padding: 50px 0;
-    background: #1F3F6C;
-    min-height: 300px;
-    display: flex;
+.carouselPhotos{
+    margin-bottom: 10%;
 }
-.studentContent {
-    overflow: initial;
-    padding: 50px 0;
-    background: #E3392D;
-    min-height: 300px;
-    display: flex;
-}
+
 .student{
-    margin-left: 10%;
-    margin-right: 10%;
+    padding: 50px 10%;
+    background: #E3392D;
     color:white;
     text-align: justify;
-    font-size: 25px;
+    font-size: 18px;
+    margin-bottom: -4%;
 }
 .teacher{
-    margin-left: 10%;
-    margin-right: 10%;
+    padding: 50px 10%;
+    background: #1F3F6C;
     color:white;
     text-align: justify;
-    font-size: 25px;
+    font-size: 18px;
 }
 .imgStudent{
     float: right;
@@ -144,16 +135,18 @@ body {
 }
 .imgTeacher{
     float: left;
-    width: 80%;
+    width: 90%;
 }
 .imgLogo{
     float: left;
     width: 100%;
+    border-radius: 15px;
 }
 .logo{
     width: 30%;
     height: 50%;
 }
+
 .teacherTitle{
     background-color: #1F3F6C;
     color:white;
@@ -165,8 +158,8 @@ body {
 }
 .studentTitle{
     background-color: #E3392D;
-    color:white;
     margin-bottom: 0px;
+    color:white;
     font-size: 35px;
     padding-left: 13%;
     padding-top: 2%;
@@ -180,7 +173,7 @@ body {
     padding: 50px 0;
     background: white;
     min-height: 300px;
-    display: flex;
+    /*display: flex;*/
 }
 
 .ant-table-thead > tr > th,
