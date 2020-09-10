@@ -60,22 +60,6 @@ const MainLayout = props => {
                     </Button>
                   </Popover>
                 </Col>
-
-                <Col xs={ 22 } md={ 4 } className='logos-social-header' align='right'>
-                  <a href='https://www.facebook.com'
-                     target='_blank'
-                     rel='noopener noreferrer'
-                     style={ {
-                       marginLeft: 30,
-                       marginRight: 30
-                     } }>
-                    <FacebookOutlined />
-                  </a>
-
-                  <a href='https://www.instagram.com' target='_blank' rel='noopener noreferrer'>
-                    <InstagramOutlined />
-                  </a>
-                </Col>
               </Row>
             </Header>
           </Col>
@@ -92,74 +76,67 @@ const MainLayout = props => {
 
         <Footer className='footer'>
           <Row>
-            <Col xs={ { span: 24 } } md={ 8 } className='logo-blanco'>
-              LOGO
-            </Col>
-
             <Col xs={ {
               span: 24,
               offset: 0
             } }
-                 md={ {
-                   span: 5,
-                   offset: 3
-                 } }
-                 className='logo-menta'>
-              Elaborado por: <br />
-              <a href='https://grupomenta.com' rel='noopener noreferrer' target='_blank'>
-                <img src={ logo } alt='Profe a Tiempo' height={ 50 } />
+                 md={10}
+            >
+              <a rel='noopener noreferrer' target='_blank'>
+                {/*<img src={logoFooter} height={ 100 } />*/}
               </a>
+              <br/>
+              <br/>
+              <p>Somos tu plataforma de confianza</p>
+              <p>ESFOT Feedback Team</p>
+            </Col>
+
+            <Col xs={ { span: 24 } } md={ 10 }
+                 className='contact-links'>
+              <p><strong>Contactos</strong></p>
+              {/*<p><EnvironmentOutlined />Casa de la Cultura</p>*/}
+              <p><WhatsAppOutlined /> <a href='https://wa.me/593984794808' target='_blank' rel='noopener noreferrer'>+593
+                9-8392-7151</a></p>
+              <p><MailOutlined/> mario.montero@epn.edu.ec</p>
+              {/*<p><SkypeOutlined />ESFOT Feedback</p>*/}
             </Col>
 
             <Col xs={ {
               span: 24,
               offset: 0
             } }
-                 md={ {
-                   span: 4,
-                   offset: 4
-                 } }
-                 className='contact-links'>
-              <p><strong>Contáctanos</strong></p>
-              <p><MailOutlined /> <a href='mailto:chalo.salvador@grupomenta.com'>chalo.salvador@grupomenta.com</a></p>
-              <p><WhatsAppOutlined /> <a href='https://wa.me/593984794808' target='_blank' rel='noopener noreferrer'>+593
-                9-8479-4808</a></p>
-              <p><GithubOutlined /> <a href='https://github.com/chalosalvador'
-                                       target='_blank'
-                                       rel='noopener noreferrer'>@chalosalvador</a>
-              </p>
-            </Col>
-          </Row>
-
-          <Row type='flex' justify='space-between' align='bottom'>
-            <Col xs={ 24 } md={ 8 }>
-              { moment().format( 'YYYY' ) } - Para uso libre.
-            </Col>
-
-            <Col xs={ 24 } md={ 4 } className='footer-links'>
-              <Link to={ Routes.ABOUT } style={ { marginRight: 20 } }>Preguntas frecuentes</Link>
-            </Col>
-            <Col xs={ 24 } md={ 4 } className='footer-links'>
-              <Link to={ Routes.ABOUT }>Términos y condiciones</Link>
-            </Col>
-
-            <Col xs={ 24 } md={ 8 } className='logos-social'>
+                 md={4} >
               <strong>Síguenos en:</strong>
+              <br/>
               <a href='https://www.facebook.com'
                  target='_blank'
                  rel='noopener noreferrer'
                  style={ {
-                   marginLeft: 30,
-                   marginRight: 30
+                   marginRight: 10
                  } }>
                 <FacebookOutlined />
               </a>
-
-              <a href='https://www.instagram.com' target='_blank' rel='noopener noreferrer'>
+              <a href='https://www.instagram.com' target='_blank' rel='noopener noreferrer'
+                 style={ {
+                   marginRight: 10
+                 } }>
                 <InstagramOutlined />
               </a>
+              <a href='https://www.twitter.com'
+                 style={ {
+                   marginRight: 10
+                 } }>
+                {/*<TwitterOutlined />*/}
+              </a>
+              {/*<a href='https://www.google.com'*/}
+              {/*   style={ {*/}
+              {/*     marginRight: 10*/}
+              {/*   } }>*/}
+              {/*  <p><GooglePlusOutlined/></p>*/}
+              {/*</a>*/}
             </Col>
           </Row>
+
         </Footer>
       </Layout>
     </div>

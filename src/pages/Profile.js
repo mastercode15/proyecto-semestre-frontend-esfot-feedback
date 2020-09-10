@@ -18,11 +18,11 @@ const ProfilePage = () => {
         let user = "No especificado";
         // eslint-disable-next-line default-case
         switch (userType) {
-            case 'App\\Admin':
-                user = "Admim"
+            case 'ROLE_TEACHER':
+                user = "Docente"
                 break;
-            case 'App\\Writer':
-                user = "Escritor"
+            case 'ROLE_STUDENT':
+                user = "Estudiante"
                 break;
 
 
@@ -43,7 +43,7 @@ const ProfilePage = () => {
             <ul>
                 <li>Nombre: {currentUser.name}</li>
                 <li>Correo: {currentUser.email}</li>
-                <li>Tipo de Usuario:{typeOfUser(currentUser.userable_type)}</li>
+                <li>Tipo de Usuario:{typeOfUser(currentUser.role)}</li>
             </ul>
         </h2>
         <h1 className='title'>
