@@ -1,5 +1,4 @@
 import React from 'react';
-import Routes from '../constants/routes';
 import { useAuth } from '../providers/Auth';
 import { Checkbox, Col, Form, Input, Row, Button, message } from 'antd';
 import { LockOutlined, UserOutlined, EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons/lib';
@@ -10,6 +9,7 @@ import { translateMessage } from '../utils/translateMessage';
 import { Link } from 'react-router-dom';
 import '../styles/login.css';
 import ErrorList from '../components/ErrorList';
+//import user from 'https://image.flaticon.com/icons/svg/17/17797.svg';
 
 const Login = () => {
   const { setAuthenticated, setCurrentUser } = useAuth();
@@ -51,6 +51,17 @@ const Login = () => {
               } }
               onFinish={ onFinish }
             >
+
+              <Row type='flex' justify='center' style={ { flex: 'auto' } }>
+                <Col align={'center'}>
+                  <img className='imgLogo' src={'https://image.flaticon.com/icons/svg/17/17797.svg'} height={200} width={200} />
+                  <br/>
+                  <br/>
+                  <h1>Modulo de inicio se sesión</h1>
+                </Col>
+              </Row>
+
+              <h3>Correo institucional:</h3>
               <Form.Item
                 name='username'
                 rules={ [
@@ -68,13 +79,13 @@ const Login = () => {
                        placeholder='Email'
                        autoComplete='email' />
               </Form.Item>
-
+              <h3>Contraseña:</h3>
               <Form.Item
                 name='password'
                 rules={ [
                   {
                     required: true,
-                    message: 'Ingresa tu clave'
+                    message: 'Ingresa tu contraseña'
                   }
                 ] }
               >
@@ -91,15 +102,21 @@ const Login = () => {
 
               <Form.Item>
                 <Link className='login-form-forgot' to=''>
-                  ¡Olvidé mi clave!
+                  ¡Olvidé mi contraseña ayuda!
                 </Link>
               </Form.Item>
 
               <Form.Item>
-                <Button type='primary' htmlType='submit' className='login-form-button'>
-                  Ingresar
-                </Button>
-                <div>Soy nuevo, <Link to={ Routes.REGISTER }>registrarme</Link></div>
+
+                <Row type='flex' justify='center' style={ { flex: 'auto' } }>
+                  <Col span={4}>
+                    <Button type='primary' htmlType='submit' className='login-form-button'>
+                      Ingresar
+                    </Button>
+                  </Col>
+                </Row>
+
+
               </Form.Item>
             </Form>
           </Col>
