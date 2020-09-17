@@ -4,15 +4,27 @@
 import React from 'react';
 import Routes from '../constants/routes';
 import Navigation from './Navigation';
-import { Layout, Row, Col, Button, Popover } from 'antd';
-import { FacebookOutlined, InstagramOutlined, GithubOutlined, MailOutlined, WhatsAppOutlined } from '@ant-design/icons';
-import logo from '../images/logo-menta.png';
+import { Carousel ,Layout, Row, Col, Button, Popover } from 'antd';
+import { SkypeOutlined,EnvironmentOutlined,TwitterOutlined,GooglePlusOutlined,FacebookOutlined, InstagramOutlined, GithubOutlined, MailOutlined, WhatsAppOutlined } from '@ant-design/icons';
+import logoFooter from '../images/logoFooter.png';
+import estudiantes from '../images/estudiantes.jpg';
+import logo from '../images/logoNavbar.png';
+import profesores from '../images/profesores.jpg';
+import principalLogo from '../images/logonormal.png';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 
 const Header = Layout.Header;
 const Content = Layout.Content;
 const Footer = Layout.Footer;
+
+const contentStyle = {
+  height: '160px',
+  color: '#fff',
+  lineHeight: '160px',
+  textAlign: 'center',
+  background: '#364d79',
+};
 
 /**
  * Este componente renderiza los elementos comunes para toda la aplicación
@@ -68,8 +80,8 @@ const MainLayout = props => {
 
         <Content className='content'>
           <Row type='flex' justify='center' style={ { flex: 'auto' } }>
-            <Col xs={ 22 } md={ 20 }>
-              { props.children }
+            <Col span={24}>
+              {props.children}
             </Col>
           </Row>
         </Content>
@@ -81,9 +93,11 @@ const MainLayout = props => {
               offset: 0
             } }
                  md={10}
-            >
+
+                 >
               <a rel='noopener noreferrer' target='_blank'>
-                {/*<img src={logoFooter} height={ 100 } />*/}
+                <img src={logoFooter} height={ 100 } />
+
               </a>
               <br/>
               <br/>
@@ -94,47 +108,48 @@ const MainLayout = props => {
             <Col xs={ { span: 24 } } md={ 10 }
                  className='contact-links'>
               <p><strong>Contactos</strong></p>
-              {/*<p><EnvironmentOutlined />Casa de la Cultura</p>*/}
+
+              <p><EnvironmentOutlined />Casa de la Cultura</p>
               <p><WhatsAppOutlined /> <a href='https://wa.me/593984794808' target='_blank' rel='noopener noreferrer'>+593
                 9-8392-7151</a></p>
               <p><MailOutlined/> mario.montero@epn.edu.ec</p>
-              {/*<p><SkypeOutlined />ESFOT Feedback</p>*/}
+              <p><SkypeOutlined />ESFOT Feedback</p>
             </Col>
 
-            <Col xs={ {
-              span: 24,
-              offset: 0
-            } }
-                 md={4} >
-              <strong>Síguenos en:</strong>
-              <br/>
-              <a href='https://www.facebook.com'
-                 target='_blank'
-                 rel='noopener noreferrer'
-                 style={ {
-                   marginRight: 10
-                 } }>
-                <FacebookOutlined />
-              </a>
-              <a href='https://www.instagram.com' target='_blank' rel='noopener noreferrer'
-                 style={ {
-                   marginRight: 10
-                 } }>
-                <InstagramOutlined />
-              </a>
-              <a href='https://www.twitter.com'
-                 style={ {
-                   marginRight: 10
-                 } }>
-                {/*<TwitterOutlined />*/}
-              </a>
-              {/*<a href='https://www.google.com'*/}
-              {/*   style={ {*/}
-              {/*     marginRight: 10*/}
-              {/*   } }>*/}
-              {/*  <p><GooglePlusOutlined/></p>*/}
-              {/*</a>*/}
-            </Col>
+          <Col xs={ {
+            span: 24,
+            offset: 0
+          } }
+               md={4} >
+            <strong>Síguenos en:</strong>
+            <br/>
+            <a href='https://www.facebook.com'
+               target='_blank'
+               rel='noopener noreferrer'
+               style={ {
+                 marginRight: 10
+               } }>
+              <FacebookOutlined />
+            </a>
+            <a href='https://www.instagram.com' target='_blank' rel='noopener noreferrer'
+               style={ {
+                 marginRight: 10
+               } }>
+              <InstagramOutlined />
+            </a>
+            <a href='https://www.twitter.com'
+               style={ {
+                 marginRight: 10
+               } }>
+              <TwitterOutlined />
+            </a>
+            {/*<a href='https://www.google.com'*/}
+            {/*   style={ {*/}
+            {/*     marginRight: 10*/}
+            {/*   } }>*/}
+            {/*  <p><GooglePlusOutlined/></p>*/}
+            {/*</a>*/}
+          </Col>
           </Row>
 
         </Footer>
