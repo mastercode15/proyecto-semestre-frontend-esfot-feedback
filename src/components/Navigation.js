@@ -55,7 +55,7 @@ const Navigation = ( props ) => {
         </Menu.Item>
 
         <Menu.Item key={ Routes.ARTICLES }>
-          <Link to={ Routes.ARTICLES } style={ linkStyle }>Perfil</Link>
+          <Link to={ Routes.PROFILE } style={ linkStyle }>Perfil</Link>
         </Menu.Item>
 
         <Menu.Item key={ Routes.PRIVATE }>

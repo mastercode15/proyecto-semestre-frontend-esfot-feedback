@@ -2,7 +2,7 @@ import React from 'react';
 import ArticleList from '../components/SubjectsList';
 import { useSubjectsList } from '../data/useSubjectsList';
 import ShowError from '../components/ShowError';
-import {Carousel, Col, Layout, Row} from "antd";
+import {Carousel, Col, Layout, Row,Sider} from "antd";
 import estudiantes from "../images/estudiantes.jpg";
 import profesores from "../images/profesores.jpg";
 import logoFooter from "../images/logoFooter.png";
