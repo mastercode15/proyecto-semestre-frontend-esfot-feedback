@@ -8,6 +8,7 @@ import history from '../utils/history';
 const baseURL = process.env.REACT_APP_API_HOST;
 let headers = { 'Accept': 'application/json' };
 
+
 /**
  * Este es el método principal que establece las cabeceras y los datos que
  * deben viajar con la petición, verifica si existe una sesión activa e incluye
