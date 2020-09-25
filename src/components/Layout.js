@@ -93,9 +93,11 @@ const MainLayout = props => {
               offset: 0
             } }
                  md={10}
+
                  >
               <a rel='noopener noreferrer' target='_blank'>
                 <img src={logoFooter} height={ 100 } />
+
               </a>
               <br/>
               <br/>
@@ -106,6 +108,7 @@ const MainLayout = props => {
             <Col xs={ { span: 24 } } md={ 10 }
                  className='contact-links'>
               <p><strong>Contactos</strong></p>
+
               <p><EnvironmentOutlined />Casa de la Cultura</p>
               <p><WhatsAppOutlined /> <a href='https://wa.me/593984794808' target='_blank' rel='noopener noreferrer'>+593
                 9-8392-7151</a></p>

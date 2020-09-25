@@ -43,6 +43,7 @@ const ProfilePage= () => {
 
 
     return<>
+      
         <Layout>
 
             <Sider>
@@ -79,6 +80,30 @@ const ProfilePage= () => {
         </Layout>
 
 
+
+
+        <h1 className='title'>
+            Perfil de usuario
+        </h1>
+        <h2>
+            <ul>
+                <li>Nombre: {currentUser.name}</li>
+                <li>Correo: {currentUser.email}</li>
+                <li>Tipo de Usuario:{typeOfUser(currentUser.role)}</li>
+            </ul>
+        </h2>
+        <h1 className='title'>
+            Categorias a las que pertenece el usuario:
+        </h1>
+        <h2>
+            {
+                categoriesByUser.isLoading
+                    ? 'Cargando...'
+                    : categoriesByUser.isError
+                    ? <ShowError error={ categoriesByUser.isError } />
+                    : <CategoriesByUserList categoriesByUser={ categoriesByUser.categories } />
+            }
+        </h2>
 
 
     </>
