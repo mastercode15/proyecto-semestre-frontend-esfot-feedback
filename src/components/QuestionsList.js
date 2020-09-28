@@ -14,9 +14,9 @@ const {TextArea} = Input;
 
 const {Text} = Typography;
 const QuestionsList = () => {
-    const { isAuthenticated, isCheckingAuth, currentUser } = useAuth();
+        const {isAuthenticated, isCheckingAuth, currentUser} = useAuth();
 
-        let inProgres = false;
+        const [inProgress, setInProgress] = useState(false);
         const [answer1, setAnswer1] = useState(null);
         const [answer2, setAnswer2] = useState(null);
         const [answer3, setAnswer3] = useState(null);
@@ -60,7 +60,7 @@ const QuestionsList = () => {
                 window.alert('Debe contestar todas las preguntas')
             } else {
                 try {
-
+                    setInProgress(true);
                     await API.post(`/answers`, {
                         Value: answer1,
                         FK_idQuestion: 1,
@@ -105,7 +105,7 @@ const QuestionsList = () => {
                             user_subject_id: 1,
                         });
                     }
-
+                    setInProgress(false);
 
                 } catch (error) {
                     console.log('error', error);
@@ -154,7 +154,7 @@ const QuestionsList = () => {
                                         <div>
                                             {question.Text}
                                             <br/>
-                                            <Radio.Group id={index} name={`pregunta${index + 1}`} onChange={handleChange}>
+                                            <Radio.Group id={index} name={`pregunta${index + 1}`} onChange={handleChange} disabled={inProgress}>
                                                 <Radio key={index} value={1}>1</Radio>
                                                 <Radio key={index} value={2}>2</Radio>
                                                 <Radio key={index} value={3}>3</Radio>
@@ -165,7 +165,7 @@ const QuestionsList = () => {
                                         : <div style={{width: '50%'}}>
                                             {question.Text}
                                             <br/>
-                                            <TextArea rows={4} onChange={handleSaveComment} id={'comment'}/>
+                                            <TextArea rows={4} onChange={handleSaveComment} id={'comment'} disabled={inProgress}/>
                                         </div>
 
                                 }
@@ -177,9 +177,16 @@ const QuestionsList = () => {
                     )
                 }
                 <br/>
-                <Button type="primary" icon={<SendOutlined/>} onClick={handleSubmit}>
-                    Enviar
-                </Button>
+                {
+                    !inProgress
+                        ? <Button type="primary" icon={<SendOutlined/>} onClick={handleSubmit}>
+                            Enviar
+                        </Button>
+                        :<Button type="primary" loading>
+                            Enviando Resultados
+                        </Button>
+                }
+
             </>
         );
     }
