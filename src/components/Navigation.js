@@ -9,6 +9,8 @@ import { Menu } from 'antd';
 import { LogoutOutlined, LoginOutlined, LoadingOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, useLocation } from 'react-router-dom';
 import '../styles/navigation.css';
+import SubjectsList from "./SubjectsList";
+import menuRol from "./menuRol";
 
 const linkStyle = {};
 
@@ -36,6 +38,26 @@ const Navigation = ( props ) => {
       current: e.key
     } );
   };
+    const typeOfUser = (userType) =>{
+        console.log(userType);
+
+        let user = "No especificado";
+
+        switch (userType) {
+            case 'ROLE_TEACHER':
+                user = "Docente"
+                break;
+            case 'ROLE_STUDENT':
+                user = "Estudiante"
+                break;
+
+
+        }
+        console.log(user);
+        return user;
+
+    }
+
 
   return (
     <>
@@ -50,21 +72,32 @@ const Navigation = ( props ) => {
           width: 'fit-content'
         } }
       >
-        <Menu.Item key={ Routes.HOME }>
-          <Link to={ Routes.HOME } style={ linkStyle }>Inicio</Link>
-        </Menu.Item>
 
-        <Menu.Item key={ Routes.ARTICLES }>
-          <Link to={ Routes.PROFILE } style={ linkStyle }>Perfil</Link>
-        </Menu.Item>
+          <Menu.Item key={Routes.HOME}>
+              <Link to={Routes.HOME} style={linkStyle} onClick={typeOfUser}>Inicio</Link>
+          </Menu.Item>
+          {currentUser?
+              currentUser.role == 'ROLE_STUDENT'&&
+              <>
 
-        <Menu.Item key={ Routes.PRIVATE }>
-          <Link to={ Routes.PRIVATE } style={ linkStyle }>Encuestas</Link>
-        </Menu.Item>
 
-        <Menu.Item key={ Routes.ABOUT }>
-          <Link to={ Routes.ABOUT } style={ linkStyle }>Dashboard</Link>
-        </Menu.Item>
+                  <Menu.Item key={Routes.ARTICLES}>
+                      <Link to={Routes.PROFILE} style={linkStyle}>Perfil</Link>
+                  </Menu.Item>
+
+                  <Menu.Item key={Routes.PRIVATE}>
+                      <Link to={Routes.PRIVATE} style={linkStyle}>Encuestas</Link>
+                  </Menu.Item>
+
+
+              </>
+              :null
+          }
+
+
+
+
+
 
         {
           isAuthenticated
@@ -72,14 +105,7 @@ const Navigation = ( props ) => {
                 <Menu.Item key={ Routes.PROFILE }>
                   <Link to={ Routes.PROFILE } style={ linkStyle }>Perfil</Link>
                 </Menu.Item>
-              <Menu.ItemGroup title='Item 1'>
-                <Menu.Item key='setting:1'>Option 1</Menu.Item>
-                <Menu.Item key='setting:2'>Option 2</Menu.Item>
-              </Menu.ItemGroup>
-              <Menu.ItemGroup title='Item 2'>
-                <Menu.Item key='setting:3'>Option 3</Menu.Item>
-                <Menu.Item key='setting:4'>Option 4</Menu.Item>
-              </Menu.ItemGroup>
+
 
               <Menu.Item key={ Routes.LOGIN }>
                 <Link to={ Routes.LOGOUT } className='logout-link'>
