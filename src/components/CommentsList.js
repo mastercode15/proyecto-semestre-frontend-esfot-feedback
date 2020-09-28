@@ -28,11 +28,12 @@ const CommentsList = ( { comments, articleId } ) => {
           ...comments.comments,
         ]
       }, false );
+      //envio de formulario !!!!!
       await API.post( `/articles/${ articleId }/comments`, {
         text: values.text,
         article_id: articleId
       } );
-      comments.mutate(); // get updated data
+      comments.mutate(); // get updated data aqui se consulta la data nuevamente
       setSubmitting( false );
     } catch( error ) {
       console.log( 'error', error );
