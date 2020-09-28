@@ -23,7 +23,7 @@ const loadableOptions = { fallback: <Loading /> };
 const AsyncHome = loadable( () => import( '../pages/Index' ), loadableOptions );
 const AsyncLogin = loadable( () => import( '../pages/Login' ), loadableOptions );
 const AsyncRegister = loadable( () => import( '../pages/Register' ), loadableOptions );
-const AsyncPrivate = loadable( () => import( '../pages/Private' ), loadableOptions );
+const AsyncPrivate = loadable( () => import( '../pages/Survey' ), loadableOptions );
 const AsyncArticles = loadable( () => import( '../pages/Articles' ), loadableOptions );
 const AsyncArticle = loadable( () => import( '../pages/Article' ), loadableOptions );
 const AsyncAbout = loadable( () => import( '../pages/About' ), loadableOptions );
