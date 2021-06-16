@@ -9,116 +9,79 @@ import { Menu } from 'antd';
 import { LogoutOutlined, LoginOutlined, LoadingOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, useLocation } from 'react-router-dom';
 import '../styles/navigation.css';
-import SubjectsList from "./SubjectsList";
-import menuRol from "./menuRol";
 
 const linkStyle = {};
 
-const Navigation = ( props ) => {
+const Navigation = (props) => {
   let location = useLocation();
 
-  const [ menuState, setMenuState ] = useState( {
+  const [menuState, setMenuState] = useState({
     current: location.pathname, // set the current selected item in menu, by default the current page
     collapsed: false,
     openKeys: []
-  } );
+  });
   const { isAuthenticated, isCheckingAuth, currentUser } = useAuth();
 
-  React.useEffect( () => {
-    setMenuState( {
+  React.useEffect(() => {
+    setMenuState({
       ...menuState,
       current: location.pathname
-    } );
-  }, [ location, isAuthenticated ] );
+    });
+  }, [location, isAuthenticated]);
 
-  const handleClick = ( e ) => {
-    console.log( 'click ', e );
-    setMenuState( {
+  const handleClick = (e) => {
+    console.log('click ', e);
+    setMenuState({
       ...menuState,
       current: e.key
-    } );
+    });
   };
-    const typeOfUser = (userType) =>{
-        console.log(userType);
-
-        let user = "No especificado";
-
-        switch (userType) {
-            case 'ROLE_TEACHER':
-                user = "Docente"
-                break;
-            case 'ROLE_STUDENT':
-                user = "Estudiante"
-                break;
-
-
-        }
-        console.log(user);
-        return user;
-
-    }
-
 
   return (
     <>
       <Menu
-        mode={ props.mode }
-        onClick={ handleClick }
+        mode={props.mode}
+        onClick={handleClick}
         className='menu'
         theme='dark'
-        selectedKeys={ [ menuState.current ] }
-        style={ {
+        selectedKeys={[menuState.current]}
+        style={{
           lineHeight: '64px',
           width: 'fit-content'
-        } }
+        }}
       >
-
-          <Menu.Item key={Routes.HOME}>
-              <Link to={Routes.HOME} style={linkStyle} onClick={typeOfUser}>Inicio</Link>
-          </Menu.Item>
-          {currentUser?
-              currentUser.role == 'ROLE_STUDENT'&&
-              <>
-
-
-                  <Menu.Item key={Routes.ARTICLES}>
-                      <Link to={Routes.PROFILE} style={linkStyle}>Perfil</Link>
-                  </Menu.Item>
-
-                  <Menu.Item key={Routes.PRIVATE}>
-                      <Link to={Routes.PRIVATE} style={linkStyle}>Encuestas</Link>
-                  </Menu.Item>
-
-
-              </>
-              :null
-          }
-
-
-
-
-
+        <Menu.Item key={Routes.HOME}>
+          <Link to={Routes.HOME} style={linkStyle}>Inicio</Link>
+        </Menu.Item>
 
         {
           isAuthenticated
-            ? <Menu.SubMenu icon={ <UserOutlined /> } title={ currentUser && currentUser.name }>
-                <Menu.Item key={ Routes.PROFILE }>
-                  <Link to={ Routes.PROFILE } style={ linkStyle }>Perfil</Link>
+            ? <>
+              <Menu.Item key={Routes.PRIVATE}>
+                <Link to={Routes.PRIVATE} style={linkStyle}>Encuestas</Link>
+              </Menu.Item>
+
+              <Menu.Item key={Routes.ABOUT}>
+                <Link to={Routes.ABOUT} style={linkStyle}>Dashboard</Link>
+              </Menu.Item>
+              <Menu.SubMenu icon={<UserOutlined />} title={currentUser && currentUser.name}>
+                <Menu.Item key={Routes.PROFILE}>
+                  <Link to={Routes.PROFILE} style={linkStyle}>Perfil</Link>
                 </Menu.Item>
 
-
-              <Menu.Item key={ Routes.LOGIN }>
-                <Link to={ Routes.LOGOUT } className='logout-link'>
-                  {
-                    isCheckingAuth
-                      ? <LoadingOutlined />
-                      : <><LogoutOutlined /> Salir</>
-                  }
-                </Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-            : <Menu.Item key={ Routes.LOGIN }>
-              <Link to={ Routes.LOGIN }>
+                <Menu.Item key={Routes.LOGIN}>
+                  <Link to={Routes.LOGOUT} className='logout-link'>
+                    {
+                      isCheckingAuth
+                        ? <LoadingOutlined />
+                        : <><LogoutOutlined /> Salir</>
+                    }
+                  </Link>
+                </Menu.Item>
+              </Menu.SubMenu>
+            </>
+            : <Menu.Item key={Routes.LOGIN}>
+              <Link to={Routes.LOGIN}>
                 {
                   isCheckingAuth
                     ? <LoadingOutlined />
