@@ -11,13 +11,14 @@ const publicRoutes = {
   HOME: '/',
   ABOUT: '/acerca-de',
   ANTD: '/antd',
-  PROFILE:'/perfil'
+  PROFILE: '/perfil'
 };
 
 const privateRoutes = {
   LOGOUT: '/logout',
   PRIVATE: '/survey',
-  ARTICLE_ID: '/articulo/:id'
+  ARTICLE_ID: '/articulo/:id',
+  PENDINGSURVEYS: '/pending surveys'
 };
 
 const Routes = {

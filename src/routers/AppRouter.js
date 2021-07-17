@@ -20,15 +20,16 @@ import Loading from '../components/Loading';
  */
 const loadableOptions = { fallback: <Loading /> };
 
-const AsyncHome = loadable( () => import( '../pages/Index' ), loadableOptions );
-const AsyncLogin = loadable( () => import( '../pages/Login' ), loadableOptions );
-const AsyncRegister = loadable( () => import( '../pages/Register' ), loadableOptions );
-const AsyncPrivate = loadable( () => import( '../pages/Survey' ), loadableOptions );
-const AsyncArticles = loadable( () => import( '../pages/Articles' ), loadableOptions );
-const AsyncArticle = loadable( () => import( '../pages/Article' ), loadableOptions );
-const AsyncAbout = loadable( () => import( '../pages/About' ), loadableOptions );
-const AsyncProfile = loadable( () => import( '../pages/Profile' ), loadableOptions );
-const AsyncLogout = loadable( () => import( '../pages/Logout' ), loadableOptions );
+const AsyncHome = loadable(() => import('../pages/Index'), loadableOptions);
+const AsyncLogin = loadable(() => import('../pages/Login'), loadableOptions);
+const AsyncRegister = loadable(() => import('../pages/Register'), loadableOptions);
+const AsyncPrivate = loadable(() => import('../pages/Survey'), loadableOptions);
+const AsyncPendingSurveys = loadable(() => import('../pages/PendingSurveys'), loadableOptions);
+const AsyncArticles = loadable(() => import('../pages/Articles'), loadableOptions);
+const AsyncArticle = loadable(() => import('../pages/Article'), loadableOptions);
+const AsyncAbout = loadable(() => import('../pages/About'), loadableOptions);
+const AsyncProfile = loadable(() => import('../pages/Profile'), loadableOptions);
+const AsyncLogout = loadable(() => import('../pages/Logout'), loadableOptions);
 
 
 /**
@@ -44,17 +45,18 @@ const AsyncLogout = loadable( () => import( '../pages/Logout' ), loadableOptions
  */
 const AppRouter = () => (
   <Switch>
-    <PublicRoute exact path={ Routes.HOME } component={ AsyncHome } />
-    <PublicRoute path={ Routes.LOGIN } component={ AsyncLogin } />
-    <PublicRoute path={ Routes.REGISTER } component={ AsyncRegister } />
-    <PublicRoute path={ Routes.ARTICLES } component={ AsyncArticles } />
-    <PublicRoute path={ Routes.ABOUT } component={ AsyncAbout } />
+    <PublicRoute exact path={Routes.HOME} component={AsyncHome} />
+    <PublicRoute path={Routes.LOGIN} component={AsyncLogin} />
+    <PublicRoute path={Routes.REGISTER} component={AsyncRegister} />
+    <PublicRoute path={Routes.ARTICLES} component={AsyncArticles} />
+    <PublicRoute path={Routes.ABOUT} component={AsyncAbout} />
 
-    <PrivateRoute path={ Routes.PRIVATE } component={ AsyncPrivate } />
-    <PrivateRoute path={ Routes.ARTICLE_ID } component={ AsyncArticle } />
-    <PrivateRoute path={ Routes.LOGOUT } component={ AsyncLogout } />
-    <PrivateRoute path={ Routes.PROFILE } component={ AsyncProfile } />
-    <Route component={ NotFoundPage } />
+    <PrivateRoute path={Routes.PRIVATE} component={AsyncPrivate} />
+    <PrivateRoute path={Routes.PENDINGSURVEYS} component={AsyncPendingSurveys} />
+    <PrivateRoute path={Routes.ARTICLE_ID} component={AsyncArticle} />
+    <PrivateRoute path={Routes.LOGOUT} component={AsyncLogout} />
+    <PrivateRoute path={Routes.PROFILE} component={AsyncProfile} />
+    <Route component={NotFoundPage} />
   </Switch>
 );
 

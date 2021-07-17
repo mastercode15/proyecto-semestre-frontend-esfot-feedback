@@ -58,9 +58,11 @@ const Navigation = (props) => {
           isAuthenticated
             ? <>
               <Menu.Item key={Routes.PRIVATE}>
-                <Link to={Routes.PRIVATE} style={linkStyle}>Encuestas</Link>
+                <Link to={Routes.PRIVATE} style={linkStyle}>Encuesta</Link>
               </Menu.Item>
-
+              <Menu.Item key={Routes.PENDINGSURVEYS}>
+                <Link to={Routes.PENDINGSURVEYS} style={linkStyle}>Encuestas</Link>
+              </Menu.Item>
               <Menu.Item key={Routes.ABOUT}>
                 <Link to={Routes.ABOUT} style={linkStyle}>Dashboard</Link>
               </Menu.Item>
