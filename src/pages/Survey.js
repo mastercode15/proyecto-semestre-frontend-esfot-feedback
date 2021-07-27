@@ -1,18 +1,15 @@
 import React from 'react';
-import {Layout, Avatar, Image, Col, Row, Radio, Input, Button} from "antd";
-import {useSubjectsList} from '../data/useSubjectsList';
+import { Layout, Avatar, Image, Col, Row, Radio, Input, Button } from "antd";
 import ShowError from "../components/ShowError";
-import SubjectsList from "../components/SubjectsList";
-import {useQuestionsList} from "../data/useQuestionsList";
+import { useQuestionsList } from "../data/useQuestionsList";
 import QuestionsList from "../components/QuestionsList";
-import SendOutlined from "@ant-design/icons/lib/icons/SendOutlined";
 
-const {Sider, Content} = Layout;
-const {TextArea} = Input;
+const { Sider, Content } = Layout;
 const question = QuestionsList;
 
-const PrivatePage = () => {
-
+const PrivatePage = (props) => {
+    console.log(props.location.data);
+    const data = props.location.data;
     return <>
         <Layout>
 
@@ -20,47 +17,47 @@ const PrivatePage = () => {
                 <div>
                     <Avatar size={100} icon={<Image
                         width={100}
-                        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"/>}/>
+                        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png" />} />
                 </div>
 
             </Sider>
             <Content>
 
 
-                <div className={'container'} style={{fontSize: 'x-large'}}>
+                <div className={'container'} style={{ fontSize: 'x-large' }}>
                     <Col align={'center'}>
                         <h1>Encuesta</h1>
                     </Col>
                     <Row align={'center'}>
                         <Col span={12} align={'center'}>
-                            <h3>Materia: Ambientes no propietarios </h3>
-                            <h3>Docente: Edwin Salvador</h3>
+                            <h3>Materia: {'espacio para la materia'}</h3>
+                            <h3>Docente: {'espacio para el docente'}</h3>
                         </Col>
                         <Col span={12} align={'center'}>
                             <h3>
-                                Tema: API REST
+                                Tema: {data.Topic}
                             </h3>
                         </Col>
 
                     </Row>
                 </div>
 
-                <div className={'container'} style={{fontSize: 'large', margin: '0 5%'}}>
-                    <br/>
+                <div className={'container'} style={{ fontSize: 'large', margin: '0 5%' }}>
+                    <br />
                     <h4>Intsrucciones:</h4>
                     <h4> Seleccione una calificación para la pregunta siendo 1 la calificación mas baja y 5 la
                         calificación mas alta</h4>
-                    <br/>
+                    <br />
 
 
                     {
                         useQuestionsList.isLoading
                             ? 'cargando...'
                             : question.isError
-                            ? <ShowError error={question.isError}/>
-                            : <QuestionsList questions={question.Text}/>
+                                ? <ShowError error={question.isError} />
+                                : <QuestionsList answers={data.answers} />
                     }
-                    <br/>
+                    <br />
                 </div>
 
 

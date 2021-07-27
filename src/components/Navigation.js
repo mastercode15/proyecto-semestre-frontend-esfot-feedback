@@ -1,6 +1,3 @@
-/**
- * Created by chalosalvador on 2/7/20
- */
 import React, { useState } from 'react';
 
 import Routes from '../constants/routes';
@@ -57,9 +54,6 @@ const Navigation = (props) => {
         {
           isAuthenticated
             ? <>
-              <Menu.Item key={Routes.PRIVATE}>
-                <Link to={Routes.PRIVATE} style={linkStyle}>Encuesta</Link>
-              </Menu.Item>
               <Menu.Item key={Routes.PENDINGSURVEYS}>
                 <Link to={Routes.PENDINGSURVEYS} style={linkStyle}>Encuestas</Link>
               </Menu.Item>

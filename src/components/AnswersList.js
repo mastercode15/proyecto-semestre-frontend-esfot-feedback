@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Skeleton, Card, Col, Row, Radio, Typography, Button, Input, message, Collapse, List, Avatar, Spin } from 'antd';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useAnswersList } from '../data/useAnswersList';
 import ShowError from './ShowError';
-import { useAuth } from "../providers/Auth";
-import Routes from '../constants/routes';
 import { Link } from 'react-router-dom';
 const { Panel } = Collapse;
 const fakeDataUrl = 'https://randomuser.me/api/?results=5&inc=name,gender,email,nat&noinfo';
@@ -68,7 +66,13 @@ const AnswerList = () => {
                                                                 description={chapter.Objetives}
                                                             />
                                                             <Button onClick={() => console.log(chapter)}>
-                                                                <Link to={Routes.PRIVATE}>Realizar Encuesta</Link>
+                                                                <Link
+                                                                    to={{
+                                                                        pathname: "/survey",
+                                                                        data: chapter,
+                                                                    }}>
+                                                                    Realizar Encuesta
+                                                                </Link>
                                                             </Button>
                                                         </List.Item>
 
