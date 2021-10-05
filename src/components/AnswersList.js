@@ -41,7 +41,8 @@ const AnswerList = () => {
                 {
                     answers.map((subject, index) => {
                         return (
-                            <Panel header={subject.name} key={subject.id}>
+                            console.log(subject.chapters),
+                            < Panel header={subject.name} key={subject.id} >
                                 <InfiniteScroll
                                     initialLoad={false}
                                     pageStart={0}
@@ -81,14 +82,18 @@ const AnswerList = () => {
                                                 }
 
                                             } else {
-                                                return (
-                                                    <List.Item key={i}>
-                                                        <List.Item.Meta
-                                                            title={"No existen encuestas pendientes"}
+                                                if (i == 0) {
+                                                    return (
+                                                        <List.Item key={i}>
+                                                            <List.Item.Meta
+                                                                title={"No existen encuestas pendientes"}
 
-                                                        />
-                                                    </List.Item>
-                                                )
+                                                            />
+                                                        </List.Item>
+
+                                                    )
+                                                }
+
                                             }
                                         })
                                     }
@@ -135,15 +140,17 @@ const AnswerList = () => {
                                                 }
 
                                             } else {
-                                                return (
-                                                    <List.Item key={i}>
-                                                        <List.Item.Meta
-                                                            title={"No existen encuestas pendientes"}
+                                                if (i == 0) {
+                                                    return (
+                                                        <List.Item key={i}>
+                                                            <List.Item.Meta
+                                                                title={"No has respondido ninguna encuesta"}
 
-                                                        />
-                                                        <Button>Realizar encuesta</Button>
-                                                    </List.Item>
-                                                )
+                                                            />
+                                                        </List.Item>
+
+                                                    )
+                                                }
                                             }
                                         })
                                     }
