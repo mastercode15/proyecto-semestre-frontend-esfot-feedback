@@ -66,7 +66,11 @@ const AnswerList = () => {
                                                                 title={<a href="https://ant.design">{chapter.Topic}</a>}
                                                                 description={chapter.Objetives}
                                                             />
-                                                            <Button onClick={() => console.log(chapter)}>
+                                                            <Button onClick={() => localStorage.setItem("survey", JSON.stringify({
+                                                                subject: subject.name,
+                                                                teacher: "teacher",
+                                                                chapter: chapter
+                                                            }))}>
                                                                 <Link
                                                                     to={{
                                                                         pathname: "/survey",

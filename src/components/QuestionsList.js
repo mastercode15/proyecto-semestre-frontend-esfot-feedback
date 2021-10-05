@@ -13,7 +13,7 @@ const { TextArea } = Input;
 const { Text } = Typography;
 
 const QuestionsList = (props) => {
-    const answer = props.answers;
+    const answer = JSON.parse(localStorage["survey"]).chapter.answers
 
     const { isAuthenticated, isCheckingAuth, currentUser } = useAuth();
 
@@ -85,14 +85,17 @@ const QuestionsList = (props) => {
                     });
                 }
                 setInProgress(false);
+                localStorage.removeItem("survey")
+                props.onChange(undefined)
+                // setData(undefined)
 
             } catch (error) {
                 console.log('error', error);
-                const errorList = error.response.error_list && <ErrorList errors={error.response.error_list} />;
+                //const errorList = error.response.error_list && <ErrorList errors={error.response.error_list} />;
 
                 message.error(<>
                     {translateMessage(error.message)}
-                    {errorList}
+                    {/* {errorList} */}
                 </>);
             }
 
