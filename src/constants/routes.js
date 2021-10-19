@@ -10,6 +10,7 @@ const publicRoutes = {
   USERS_ID: `/usuario/:id`,
   HOME: '/',
   ABOUT: '/acerca-de',
+  NEWSURVEY: '/newSurvey',
   ANTD: '/antd',
   PROFILE: '/perfil'
 };

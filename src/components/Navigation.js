@@ -57,6 +57,11 @@ const Navigation = (props) => {
               <Menu.Item key={Routes.PENDINGSURVEYS}>
                 <Link to={Routes.PENDINGSURVEYS} style={linkStyle}>Encuestas</Link>
               </Menu.Item>
+              {/* new survey */}
+              <Menu.Item key={ Routes.NEWSURVEY }>
+                <Link to={ Routes.NEWSURVEY } style={ linkStyle }>Crear Encuesta</Link>
+              </Menu.Item>
+
               <Menu.Item key={Routes.ABOUT}>
                 <Link to={Routes.ABOUT} style={linkStyle}>Dashboard</Link>
               </Menu.Item>
