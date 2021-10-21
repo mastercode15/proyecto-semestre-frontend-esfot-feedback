@@ -54,7 +54,7 @@ const AnswerList = () => {
                                     {
                                         subject.chapters.map((chapter, i) => {
                                             if (chapter.answers.length != 0) {
-                                                if (chapter.answers[0].Value == '') {
+                                                if (chapter.answers[0].Value == 0) {
                                                     console.log("pendiente")
                                                     return (
 

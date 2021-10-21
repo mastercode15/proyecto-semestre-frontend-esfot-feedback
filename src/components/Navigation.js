@@ -18,7 +18,7 @@ const Navigation = (props) => {
     openKeys: []
   });
   const { isAuthenticated, isCheckingAuth, currentUser } = useAuth();
-
+  
   React.useEffect(() => {
     setMenuState({
       ...menuState,
@@ -54,13 +54,27 @@ const Navigation = (props) => {
         {
           isAuthenticated
             ? <>
-              <Menu.Item key={Routes.PENDINGSURVEYS}>
-                <Link to={Routes.PENDINGSURVEYS} style={linkStyle}>Encuestas</Link>
-              </Menu.Item>
-              {/* new survey */}
-              <Menu.Item key={ Routes.NEWSURVEY }>
-                <Link to={ Routes.NEWSURVEY } style={ linkStyle }>Crear Encuesta</Link>
-              </Menu.Item>
+              
+              {/* new survey */
+                //console.log('HOLAAA ' + (currentUser.role))
+                currentUser.role === 'ROLE_TEACHER'?
+                <Menu.Item key={ Routes.NEWSURVEY }>
+                  <Link to={ Routes.NEWSURVEY } style={ linkStyle }>Crear Encuesta</Link>
+                </Menu.Item>
+                : null
+                
+              }
+
+              {/* new survey */
+                //console.log('HOLAAA ' + (currentUser.role))
+                currentUser.role === 'ROLE_STUDENT'?
+                <Menu.Item key={Routes.PENDINGSURVEYS}>
+                  <Link to={Routes.PENDINGSURVEYS} style={linkStyle}>Encuestas</Link>
+                </Menu.Item>
+                : null
+                
+              }
+              
 
               <Menu.Item key={Routes.ABOUT}>
                 <Link to={Routes.ABOUT} style={linkStyle}>Dashboard</Link>
