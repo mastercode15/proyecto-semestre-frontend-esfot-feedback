@@ -8,7 +8,7 @@ import {useSubjectsList} from "../data/useSubjectsList";
 //import {useSubjectChapters} from "../data/useSubjectChapters";
 
 import useSWR from 'swr';
-import API from '../data/index';
+import API from '../data';
 
 import {Col, Row, Skeleton, Card, Layout,Avatar,Image, Select, Button} from "antd";
 const {Sider,Content}= Layout;
@@ -60,24 +60,12 @@ const NewSurveyPage= () => {
       };
     };
 
-    const [surveySubjectUsers, setSurveySubjectUsers] = useState(null);
-    const [theArray, setTheArray] = useState([null]);
+    const [theArray, setTheArray] = useState({});
+    const [todos, setTodos] = useState([]);
 
-    function Subject_users () {
-      const { data, error, mutate } = useSWR( () => `/subject/${subjectNumber}/user/${surveySubjectUsers}`, API.fetcher );
-      return {
-        surveySubjectUser: data && data.data,
-        isLoading: !error && !data,
-        isError: error,
-        mutate
-      };
-    };
-
-        
     var {subjectChapters } = useSubjectChapters();    
     var {chapterDetails} = useChapters(); 
     var {allSubjectUsers} = useSubjectUsers();
-    var {surveySubjectUser} = Subject_users();
 
     const [surveySubject, setSurveySubject] = useState('');
     const [surveyChapter, setSurveyChapter] = useState('');    
@@ -97,29 +85,90 @@ const NewSurveyPage= () => {
         setSurveyChapter(value);
     }
 
-    function handleChangeSubjectUser(value) {          
-      setSurveySubjectUsers(value);
-  }
 
     function sendSurveys(){
+      var myDatas;
       if(surveySubject ==='' || surveyChapter ===''){
         alert('Seleccione la materia y el capítulo');
       }
       else{
         console.log('subject => ' + surveySubject + '  chapter => ' + surveyChapter);
-        allSubjectUsers.map(async (allSubjectUser, index) => {
-          // console.log(allSubjectUser.id),
-          return await (
-            console.log(allSubjectUser.id + '      +    '),
-            handleChangeSubjectUser(allSubjectUser.id),      
-            console.log(surveySubjectUser + '      -    '),
-            surveySubjectUser.map((subject_user) => (
-              console.log(subject_user.id + '     ---   ')
-            ))
-          )
-        })
+        allSubjectUsers.map(async (allSubjectUser, index) => (                       
+            myDatas = await API.get(`/subject/${subjectNumber}/user/${allSubjectUser.id}`),
+            console.log(allSubjectUser.id+ '      + ID del usuario'), 
+            console.log(myDatas.data[0].id + '      * ID del subject_user' ),
+            console.log(subjectNumber + '      * ID del subject' ),
+            console.log(chapterNumber + '      * ID del chapter' ),
+
+            
+            await API.post(`/answers`, {
+              "Value":0,
+              "FK_idQuestion":1,
+              "FK_idUser":allSubjectUser.id,
+              "FK_idChapter":chapterNumber,
+              "subject_user_id":myDatas.data[0].id
+            }),
+            await API.post(`/answers`, {
+              "Value":0,
+              "FK_idQuestion":2,
+              "FK_idUser":allSubjectUser.id,
+              "FK_idChapter":chapterNumber,
+              "subject_user_id":myDatas.data[0].id
+            }),
+            await API.post(`/answers`, {
+              "Value":0,
+              "FK_idQuestion":3,
+              "FK_idUser":allSubjectUser.id,
+              "FK_idChapter":chapterNumber,
+              "subject_user_id":myDatas.data[0].id
+            }),
+            await API.post(`/answers`, {
+              "Value":0,
+              "FK_idQuestion":4,
+              "FK_idUser":allSubjectUser.id,
+              "FK_idChapter":chapterNumber,
+              "subject_user_id":myDatas.data[0].id
+            }),
+            await API.post(`/answers`, {
+              "Value":0,
+              "FK_idQuestion":5,
+              "FK_idUser":allSubjectUser.id,
+              "FK_idChapter":chapterNumber,
+              "subject_user_id":myDatas.data[0].id
+            }),
+            await API.post(`/answers`, {
+              "Value":0,
+              "FK_idQuestion":6,
+              "FK_idUser":allSubjectUser.id,
+              "FK_idChapter":chapterNumber,
+              "subject_user_id":myDatas.data[0].id
+            }),
+
+            setTodos((prevState) => ([
+              ...prevState, {
+                "user": allSubjectUser.id,
+                "subject_user": myDatas.data[0].id
+              }
+            ]))               
+        ));
+        setTimeout(() => {
+          //myFunction();
+          todos.map(item => (
+            console.log('user=> ' + item.user + '  subject_user=> ' + item.subject_user)
+          ))
+        }, 5000);
+        
       }
     }
+
+    function myFunction(){
+      console.log('HOLAAAAAAAAA')
+      todos.map(item => (
+        console.log('user=> ' + item.user + '  subject_user=> ' + item.subject_user)
+      ))
+      //console.log(todos);
+    }
+
 
     if( isLoading) {
       return <Row justify='center' gutter={ 30 }>
@@ -188,7 +237,7 @@ const NewSurveyPage= () => {
                   }
                 </h4>
                 
-                <Button type="primary" onClick={sendSurveys}>Primary</Button>
+                <Button type="primary" onClick={sendSurveys} style={{backgroundColor: "#001529", borderColor:"#001529"}}>Generar Encuesta</Button>
 
             </Content>
         </Layout>
