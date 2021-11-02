@@ -19,13 +19,13 @@ const HomePage = () => {
         <Col xs={100}>
           <Carousel>
             <div className="carousel">
-              <img class="carouselImage" src={estudiantes} alt="test" />
+              <img className="carouselImage" src={estudiantes} alt="test" />
             </div>
             <div className="carousel">
-              <img class="carouselImage" src={estudiantes} alt="test" />
+              <img className="carouselImage" src={estudiantes} alt="test" />
             </div>
             <div>
-              <h1 class="carouselImage">
+              <h1 className="carouselImage">
                 "La mejora continua viene de la mano con una retroalimentación
                 recurrente"
               </h1>
