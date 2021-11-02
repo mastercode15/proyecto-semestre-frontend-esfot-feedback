@@ -171,7 +171,7 @@ body {
     color: #fff;
     text-align: center;
     background-color: #001529;
-    font-size: xxx-large;
+    font-size: xx-large;
   }
 }
 
@@ -187,7 +187,6 @@ body {
 
 .content {
   overflow: initial;
-  padding: 50px 0;
   background: white;
   min-height: 300px;
   /*display: flex;*/
@@ -250,6 +249,10 @@ code {
 @media (min-width: 768px) {
   .main-menu {
     display: block;
+  }
+
+  .survey-row {
+    text-align: center !important;
   }
 
   .responsive-menu-button {
@@ -321,6 +324,32 @@ code {
 .carousel {
   text-align: -webkit-center;
 }
+
+/*-----avatar------*/
+
+span.ant-avatar.ant-avatar-circle.ant-avatar-icon {
+  height: auto !important;
+  width: 100% !important;
+  margin: 25px 0px;
+}
+.ant-layout-sider-children {
+  padding: 10px;
+}
+
+.ant-layout.ant-layout-has-sider > .ant-layout,
+.ant-layout.ant-layout-has-sider > .ant-layout-content {
+  margin: 10px;
+}
+
+@media (max-width: 412px) {
+  li.ant-list-item {
+    display: contents;
+  }
+  .ant-list-item-meta-content {
+    margin-bottom: 10px;
+  }
+}
+
 /*// Extra small devices (portrait phones, less than 576px)*/
 /*!*@media (max-width: 575.98px) { ... }*!*/
 
