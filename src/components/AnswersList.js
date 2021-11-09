@@ -31,16 +31,36 @@ const AnswerList = () => {
 
   if (isLoading) {
     return (
-      <Row justify="center" gutter={30}>
-        {[...new Array(9)].map((_, i) => (
-          <Col xs={24} sm={12} md={8} style={{ marginBottom: 30 }} key={i}>
-            <div style={{ textAlign: "center" }}>
-              <Skeleton.Image style={{ width: 200 }} />
-              <Card title="" extra="" cover="" loading />
-            </div>
-          </Col>
+      <>
+        {[...new Array(2)].map((_, i) => (
+          <Row gutter={30} style={{ backgroundColor: "white" }}>
+            <Skeleton.Button
+              style={{ width: 200, marginBottom: 5 }}
+              active={true}
+              size="large"
+            />
+            {[...new Array(6)].map((_, i) =>
+              i !== 5 ? (
+                <Col span={24} style={{ marginBottom: 2 }} key={i}>
+                  <Skeleton.Button
+                    style={{ width: 1300 }}
+                    active={true}
+                    size="large"
+                  />
+                </Col>
+              ) : (
+                <Col span={24} style={{ marginBottom: 8 }} key={i}>
+                  <Skeleton.Button
+                    style={{ width: 1300 }}
+                    active={true}
+                    size="large"
+                  />
+                </Col>
+              )
+            )}
+          </Row>
         ))}
-      </Row>
+      </>
     );
   }
 
@@ -51,7 +71,7 @@ const AnswerList = () => {
   return (
     <>
       <h2>Encuestas Pendientes:</h2>
-      <Collapse defaultActiveKey={["2"]} onChange={callback}>
+      <Collapse onChange={callback}>
         {answers.map((subject, index) => {
           return (
             console.log(subject.chapters),
@@ -120,7 +140,7 @@ const AnswerList = () => {
         })}
       </Collapse>
       <h2>Encuestas Realizas:</h2>
-      <Collapse defaultActiveKey={["2"]} onChange={callback}>
+      <Collapse onChange={callback}>
         {answers.map((subject, index) => {
           return (
             <Panel header={subject.name} key={subject.id}>
