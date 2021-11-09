@@ -116,17 +116,39 @@ const QuestionsList = (props) => {
 
   const { questions, isLoading, isError, mutate } = useQuestionsList();
 
+  const load = true;
   if (isLoading) {
     return (
-      <Row justify="center" gutter={30}>
-        {[...new Array(9)].map((_, i) => (
-          <Col xs={24} sm={12} md={8} style={{ marginBottom: 30 }} key={i}>
-            <div style={{ textAlign: "center" }}>
-              <Skeleton.Image style={{ width: 200 }} />
-              <Card title="" extra="" cover="" loading />
-            </div>
+      <Row justify="center" gutter={30} style={{ backgroundColor: "white" }}>
+        {[...new Array(5)].map((_, i) => (
+          <Col span={24} style={{ marginBottom: 2 }} key={i}>
+            <Skeleton
+              active
+              paragraph={{ rows: 0 }}
+              title={{
+                width: "100%",
+                style: { marginTop: 0, marginBottom: -10 },
+              }}
+            />
+            <Skeleton
+              active
+              paragraph={{ rows: 0 }}
+              title={{ width: 238, style: { marginTop: 0, marginBottom: -15 } }}
+            />
           </Col>
         ))}
+        <Col span={24} style={{ marginBottom: 2 }}>
+          <Skeleton
+            active
+            paragraph={{ rows: 0 }}
+            title={{ width: 238, style: { marginTop: 0, marginBottom: -10 } }}
+          />
+          <Skeleton.Input
+            style={{ width: "100%", height: 95, marginBottom: 20 }}
+            active
+          />
+          <Skeleton.Button active />
+        </Col>
       </Row>
     );
   }

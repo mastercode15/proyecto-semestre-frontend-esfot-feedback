@@ -291,7 +291,7 @@ code {
   }
 
   .footer {
-    padding: 30px 100px;
+    padding: 70px 100px;
     min-height: 200px;
     background-color: #2e2a25ee;
     color: #ffffff;
@@ -350,6 +350,9 @@ span.ant-avatar.ant-avatar-circle.ant-avatar-icon {
   }
 }
 
+.ant-skeleton.ant-skeleton-element.ant-skeleton-active {
+  width: 100%;
+}
 /*// Extra small devices (portrait phones, less than 576px)*/
 /*!*@media (max-width: 575.98px) { ... }*!*/
 
