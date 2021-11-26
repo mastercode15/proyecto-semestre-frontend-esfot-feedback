@@ -74,11 +74,16 @@ const Navigation = (props) => {
                 : null
                 
               }
-              
 
-              <Menu.Item key={Routes.ABOUT}>
-                <Link to={Routes.ABOUT} style={linkStyle}>Dashboard</Link>
-              </Menu.Item>
+              {/* dashboard */
+                //console.log('HOLAAA ' + (currentUser.role))
+                currentUser.role === 'ROLE_TEACHER'?
+                <Menu.Item key={Routes.ABOUT}>
+                  <Link to={Routes.ABOUT} style={linkStyle}>Dashboard</Link>
+                </Menu.Item>
+                : null
+              }
+              
               <Menu.SubMenu icon={<UserOutlined />} title={currentUser && currentUser.name}>
                 <Menu.Item key={Routes.PROFILE}>
                   <Link to={Routes.PROFILE} style={linkStyle}>Perfil</Link>

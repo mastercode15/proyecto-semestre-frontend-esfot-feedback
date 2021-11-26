@@ -9,8 +9,8 @@ export const useSubjectsList = () => {
 
   return {
     subjects: data && data.data,
-    isLoading: !error && !data,
-    isError: error,
+    isLoadingS: !error && !data,
+    isErrorS: error,
     mutate
   };
 };
