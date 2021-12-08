@@ -36,6 +36,8 @@ const ProfilePage = () => {
       case "ROLE_STUDENT":
         user = "Estudiante";
         break;
+      default:
+        user = "No Definido";
     }
     return user;
   };
@@ -45,11 +47,15 @@ const ProfilePage = () => {
       <Layout>
         <Sider breakpoint={"md"} style={{ textAlign: "center" }}>
           <div>
-            <Avatar
-              icon={
-                <Image src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png" />
-              }
-            />
+            {currentUser.profileimage === "" ? (
+              <Avatar
+                icon={
+                  <Image src="https://i.pinimg.com/originals/e2/7c/87/e27c8735da98ec6ccdcf12e258b26475.png" />
+                }
+              />
+            ) : (
+              <Avatar icon={<Image src={currentUser.profileimage} />} />
+            )}
           </div>
         </Sider>
         <Content>

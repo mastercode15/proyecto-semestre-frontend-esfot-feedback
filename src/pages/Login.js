@@ -9,6 +9,7 @@ import { translateMessage } from '../utils/translateMessage';
 import { Link } from 'react-router-dom';
 import '../styles/login.css';
 import ErrorList from '../components/ErrorList';
+import avatarIcon from '../images/avatar-icon.png'
 //import user from 'https://image.flaticon.com/icons/svg/17/17797.svg';
 
 const Login = () => {
@@ -54,7 +55,7 @@ const Login = () => {
 
               <Row type='flex' justify='center' style={ { flex: 'auto' } }>
                 <Col align={'center'}>
-                  <img className='imgLogo' src={'https://image.flaticon.com/icons/svg/17/17797.svg'} height={200} width={200} />
+                  <img  src={avatarIcon} height={200} width={200} alt="avatar icon" />
                   <br/>
                   <br/>
                   <h1>Modulo de inicio se sesión</h1>
