@@ -5,7 +5,6 @@ import "../styles/navigation.css";
 import ShowError from "../components/ShowError";
 import withAuth from "../hocs/withAuth";
 import { useSubjectsList } from "../data/useSubjectsList";
-//import {useSubjectChapters} from "../data/useSubjectChapters";
 import { useAnswersList } from "../data/useAnswersList";
 import InfiniteScroll from "react-infinite-scroller";
 import { CheckCircleOutlined, HomeOutlined } from "@ant-design/icons";
@@ -108,8 +107,6 @@ const NewSurveyPage = () => {
                 `/subject/${subjectNumber}/user/${allSubjectUser.id}`
               )
             )
-            
-
               await API.post(`/answers`, {
                 Value: 0,
                 FK_idQuestion: 1,
@@ -152,51 +149,6 @@ const NewSurveyPage = () => {
                 FK_idChapter: chapterNumber,
                 subject_user_id: myDatas.data[0].id,
               });
-              // await API.post(`/answers`, {
-              //   Value: 0,
-              //   FK_idQuestion: 1,
-              //   FK_idUser: allSubjectUser.id,
-              //   FK_idChapter: chapterNumber,
-              //   subject_user_id: myDatas.data[0].id,
-              // },
-              // {
-              //   Value: 0,
-              //   FK_idQuestion: 2,
-              //   FK_idUser: allSubjectUser.id,
-              //   FK_idChapter: chapterNumber,
-              //   subject_user_id: myDatas.data[0].id,
-              // },
-              // {
-              //   Value: 0,
-              //   FK_idQuestion: 3,
-              //   FK_idUser: allSubjectUser.id,
-              //   FK_idChapter: chapterNumber,
-              //   subject_user_id: myDatas.data[0].id,
-              // },
-              // {
-              //   Value: 0,
-              //   FK_idQuestion: 4,
-              //   FK_idUser: allSubjectUser.id,
-              //   FK_idChapter: chapterNumber,
-              //   subject_user_id: myDatas.data[0].id,
-              // },
-              // {
-              //   Value: 0,
-              //   FK_idQuestion: 5,
-              //   FK_idUser: allSubjectUser.id,
-              //   FK_idChapter: chapterNumber,
-              //   subject_user_id: myDatas.data[0].id,
-              // },
-              // {
-              //   Value: 0,
-              //   FK_idQuestion: 6,
-              //   FK_idUser: allSubjectUser.id,
-              //   FK_idChapter: chapterNumber,
-              //   subject_user_id: myDatas.data[0].id,
-              // });  
-             
-            
-             
           })
         );
         
