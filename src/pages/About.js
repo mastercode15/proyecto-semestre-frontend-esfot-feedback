@@ -8,7 +8,7 @@ import ShowError from "../components/ShowError";
 
 const { Option } = Select;
 
-const AboutPage = () => {
+const Dashboard = () => {
     const {chapterBySubjects, isLoadingS, isErrorS} = useSubjectsListChapters();
 
     const [data, setData] = useState([]);
@@ -44,6 +44,7 @@ const AboutPage = () => {
     ];
     const [dashboard, setDashboard] = useState(0);
     let mychapter = [];
+    let myAnswers = [];
 
 
     function sendChapters(chapterId, subjectId){
@@ -53,20 +54,22 @@ const AboutPage = () => {
         const results = async () =>{
             mychapter = await API.get(`/chapter/${chapterId}/answers`);
         }
+        setDashboard(1);
 
         results().then(() => {
             mychapter.data.map((subject, j) => {
                 subject.chapters.map((chapter, i) =>{
                     if (chapter.answers.length != 0) {
-                        console.log(chapter.answers);
+                        myAnswers.push(chapter.answers);
+                        console.log('HOLI ',  chapter.answers);
                     }
                 })
 
             })
-            setDashboard(1);
+        }).then(()=>{
+            console.log('TERMINO ' , myAnswers[0])
         });
     }
-
 
 
     useEffect(() => {
@@ -159,4 +162,4 @@ const AboutPage = () => {
 
 }
 
-export default AboutPage;
+export default Dashboard;
