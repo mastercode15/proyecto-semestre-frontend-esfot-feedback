@@ -8,8 +8,9 @@ import ShowError from "../components/ShowError";
 
 const { Option } = Select;
 
-const Dashboard = () => {
+const Dashboard = props => {
     const {chapterBySubjects, isLoadingS, isErrorS} = useSubjectsListChapters();
+    const [dashboard, setDashboard] = useState(false);
 
     const [data, setData] = useState([]);
     const columns = [
@@ -17,13 +18,11 @@ const Dashboard = () => {
             title: '#',
             dataIndex: 'key',
             sorter: (a, b) => b.key - a.key,
-
         },
         {
             title: 'Materia',
             dataIndex: 'subject',
             sorter: (a, b) => a.subject.localeCompare(b.subject),
-
         },
         {
             title: 'Capítulo',
@@ -34,18 +33,19 @@ const Dashboard = () => {
             title: 'Detalles',
             dataIndex: 'identifications',
             render: (identification, row, index) => {
-                return <a href="#" onClick={() => {
-                    sendChapters(identification.chapterId , identification.subjectId)}}>
+                return <a  onClick={()=>{
+                    sendChapters(identification.chapterId , identification.subjectId);
+                    setDashboard(true)
+                }
+                }>
                     Más detalles
                 </a>
             },
 
         },
     ];
-    const [dashboard, setDashboard] = useState(0);
     let mychapter = [];
-    let myAnswers = [];
-
+    var myAnswers = [];
 
     function sendChapters(chapterId, subjectId){
         console.log(`Selected chapter => ${chapterId}`);
@@ -54,20 +54,21 @@ const Dashboard = () => {
         const results = async () =>{
             mychapter = await API.get(`/chapter/${chapterId}/answers`);
         }
-        setDashboard(1);
 
         results().then(() => {
             mychapter.data.map((subject, j) => {
                 subject.chapters.map((chapter, i) =>{
                     if (chapter.answers.length != 0) {
                         myAnswers.push(chapter.answers);
-                        console.log('HOLI ',  chapter.answers);
+
+                        //console.log('HOLI ',  chapter.answers);
                     }
                 })
 
             })
         }).then(()=>{
-            console.log('TERMINO ' , myAnswers[0])
+            console.log('TERMINO ' , myAnswers[0]);
+
         });
     }
 
@@ -117,20 +118,21 @@ const Dashboard = () => {
     if (isErrorS) {
         return <ShowError error={isErrorS} />;
     }
-    if (dashboard === 1){
+    if (dashboard){
         return (
             <>
                 <h1>HOLAAA</h1>
-                <Row justify="center" gutter={30}>
-                    {[...new Array(9)].map((_, i) => (
-                    <Col xs={24} sm={12} md={8} style={{ marginBottom: 30 }} key={i}>
-                        <div style={{ textAlign: "center" }}>
-                            <Skeleton style={{ width: 600 }}/>
-                            <Card title="" extra="" cover="" loading />
-                        </div>
-                    </Col>
-                    ))}
-                </Row>
+                {myAnswers.map((myAnswer) => (
+                    console.log(myAnswer.id)
+                ))}
+
+                <a  onClick={()=>{
+                    setDashboard(false)
+                }
+                }>
+                    Regresar
+                </a>
+
             </>
         );
     }

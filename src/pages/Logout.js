@@ -16,6 +16,7 @@ const Logout = () => {
         window.localStorage.setItem( 'login', JSON.stringify( false ) );
         setAuthenticated( false );
         setCurrentUser( null );
+        window.location.reload(true);
       } catch( e ) {
         console.log( 'e', e );
       }
