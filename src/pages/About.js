@@ -2,12 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {Card, Col, Row, Select, Skeleton, Table, List, message, Divider} from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useSubjectsListChapters } from "../data/useSubjectsListChapters";
-import { useQuestionsList } from "../data/useQuestionsList";
-import { useAnswersByChapter } from "../data/useAnswersByChapter";
-
 import API from "../data";
 import ShowError from "../components/ShowError";
-import Avatar from "antd/es/avatar/avatar";
 
 const { Option } = Select;
 
@@ -21,6 +17,19 @@ const Dashboard = props => {
     const [valuesq, setValuesq] = useState([]);
     const [valuesOpen, setValuesOpen] = useState([]);
     const [question, setQuestion] = useState([]);
+    const state = {
+        labels: ['January', 'February', 'March',
+            'April', 'May'],
+        datasets: [
+            {
+                label: 'Rainfall',
+                backgroundColor: 'rgba(75,192,192,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: [65, 59, 80, 81, 56]
+            }
+        ]
+    }
 
 
     const [data, setData] = useState([]);
@@ -274,16 +283,11 @@ const Dashboard = props => {
                                                 dataLength={valuesOpen.length}
                                                 hasMore={data.length < 3}
                                                 loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-                                                endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
                                                 scrollableTarget="scrollableDiv"
                                             >
                                                 <List
                                                     size="small"
                                                     bordered
-                                                    dataSource={valuesOpen}
-                                                    renderItem={item => <List.Item>{item}</List.Item>}
-                                                />
-                                                <List
                                                     dataSource={valuesOpen}
                                                     renderItem={item => <List.Item>{item}</List.Item>}
                                                 />
@@ -328,6 +332,7 @@ const Dashboard = props => {
                 <h1 className='title'>
                     Dashboard
                 </h1>
+
                 <Table
                     columns={columns}
                     dataSource={data}
