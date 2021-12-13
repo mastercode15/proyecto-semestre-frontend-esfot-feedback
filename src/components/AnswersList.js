@@ -121,17 +121,18 @@ const AnswerList = () => {
                           </List.Item>
                         );
                       }
-                    } else {
-                      if (i == 0) {
-                        return (
-                          <List.Item key={i}>
-                            <List.Item.Meta
-                              title={"No existen encuestas pendientes"}
-                            />
-                          </List.Item>
-                        );
-                      }
                     }
+                    // } else {
+                    //   if (i == 0) {
+                    //     return (
+                    //       <List.Item key={i}>
+                    //         <List.Item.Meta
+                    //           title={"No existen encuestas pendientes"}
+                    //         />
+                    //       </List.Item>
+                    //     );
+                    //   }
+                    // }
                   })}
                 </InfiniteScroll>
               </Panel>

@@ -34,7 +34,6 @@ function callback(key) {
 const { Panel } = Collapse;
 
 const NewSurveyPage = () => {
-
   const { answers, isLoading, isError, mutate } = useAnswersList();
   //console.log(answers);
   const { currentUser } = useAuth();
@@ -62,13 +61,9 @@ const NewSurveyPage = () => {
   const [subjectChapters, setSubjectChapters] = useState([]);
   const [chapterDetails, setChapterDetails] = useState([]);
 
-
-
   const [surveySubject, setSurveySubject] = useState("");
   const [surveyChapter, setSurveyChapter] = useState("");
   const [data, setData] = useState(undefined);
-
-
 
   async function handleChangeSubject(value) {
     console.log(`selected ${value}`);
@@ -80,7 +75,6 @@ const NewSurveyPage = () => {
     setSubjectChapters(await API.get(`/subjectChapters/${value}`));
   }
 
-
   async function handleChangeChapters(value) {
     console.log(`selected ${value}`);
     setChapterNumber(value);
@@ -88,9 +82,7 @@ const NewSurveyPage = () => {
     setChapterDetails(await API.get(`/myChapters/${value}`));
   }
 
-
   async function sendSurveys() {
-    
     if (surveySubject === "" || surveyChapter === "") {
       alert("Seleccione la materia y el capítulo");
     } else {
@@ -102,63 +94,109 @@ const NewSurveyPage = () => {
           allSubjectUsers.map(async (allSubjectUser, index) => {
             var myDatas = 0;
 
-            (
-              myDatas = await API.get(
-                `/subject/${subjectNumber}/user/${allSubjectUser.id}`
-              )
-            )
-              await API.post(`/answers`, {
-                Value: 0,
-                FK_idQuestion: 1,
-                FK_idUser: allSubjectUser.id,
-                FK_idChapter: chapterNumber,
-                subject_user_id: myDatas.data[0].id,
-              });
-              await API.post(`/answers`, {
-                Value: 0,
-                FK_idQuestion: 2,
-                FK_idUser: allSubjectUser.id,
-                FK_idChapter: chapterNumber,
-                subject_user_id: myDatas.data[0].id,
-              });
-              await API.post(`/answers`, {
-                Value: 0,
-                FK_idQuestion: 3,
-                FK_idUser: allSubjectUser.id,
-                FK_idChapter: chapterNumber,
-                subject_user_id: myDatas.data[0].id,
-              });
-              await API.post(`/answers`, {
-                Value: 0,
-                FK_idQuestion: 4,
-                FK_idUser: allSubjectUser.id,
-                FK_idChapter: chapterNumber,
-                subject_user_id: myDatas.data[0].id,
-              });
-              await API.post(`/answers`, {
-                Value: 0,
-                FK_idQuestion: 5,
-                FK_idUser: allSubjectUser.id,
-                FK_idChapter: chapterNumber,
-                subject_user_id: myDatas.data[0].id,
-              });
-              await API.post(`/answers`, {
-                Value: 0,
-                FK_idQuestion: 6,
-                FK_idUser: allSubjectUser.id,
-                FK_idChapter: chapterNumber,
-                subject_user_id: myDatas.data[0].id,
-              });
+            myDatas = await API.get(
+              `/subject/${subjectNumber}/user/${allSubjectUser.id}`
+            );
+            await API.post(`/answers`, {
+              Value: 0,
+              FK_idQuestion: 1,
+              FK_idUser: allSubjectUser.id,
+              FK_idChapter: chapterNumber,
+              subject_user_id: myDatas.data[0].id,
+            });
+            await API.post(`/answers`, {
+              Value: 0,
+              FK_idQuestion: 2,
+              FK_idUser: allSubjectUser.id,
+              FK_idChapter: chapterNumber,
+              subject_user_id: myDatas.data[0].id,
+            });
+            await API.post(`/answers`, {
+              Value: 0,
+              FK_idQuestion: 3,
+              FK_idUser: allSubjectUser.id,
+              FK_idChapter: chapterNumber,
+              subject_user_id: myDatas.data[0].id,
+            });
+            await API.post(`/answers`, {
+              Value: 0,
+              FK_idQuestion: 4,
+              FK_idUser: allSubjectUser.id,
+              FK_idChapter: chapterNumber,
+              subject_user_id: myDatas.data[0].id,
+            });
+            await API.post(`/answers`, {
+              Value: 0,
+              FK_idQuestion: 5,
+              FK_idUser: allSubjectUser.id,
+              FK_idChapter: chapterNumber,
+              subject_user_id: myDatas.data[0].id,
+            });
+            await API.post(`/answers`, {
+              Value: 0,
+              FK_idQuestion: 6,
+              FK_idUser: allSubjectUser.id,
+              FK_idChapter: chapterNumber,
+              subject_user_id: myDatas.data[0].id,
+            });
+            await API.post(`/answers`, {
+              Value: 0,
+              FK_idQuestion: 7,
+              FK_idUser: allSubjectUser.id,
+              FK_idChapter: chapterNumber,
+              subject_user_id: myDatas.data[0].id,
+            });
+            await API.post(`/answers`, {
+              Value: 0,
+              FK_idQuestion: 8,
+              FK_idUser: allSubjectUser.id,
+              FK_idChapter: chapterNumber,
+              subject_user_id: myDatas.data[0].id,
+            });
+            await API.post(`/answers`, {
+              Value: 0,
+              FK_idQuestion: 9,
+              FK_idUser: allSubjectUser.id,
+              FK_idChapter: chapterNumber,
+              subject_user_id: myDatas.data[0].id,
+            });
+            await API.post(`/answers`, {
+              Value: 0,
+              FK_idQuestion: 10,
+              FK_idUser: allSubjectUser.id,
+              FK_idChapter: chapterNumber,
+              subject_user_id: myDatas.data[0].id,
+            });
+            await API.post(`/answers`, {
+              Value: 0,
+              FK_idQuestion: 11,
+              FK_idUser: allSubjectUser.id,
+              FK_idChapter: chapterNumber,
+              subject_user_id: myDatas.data[0].id,
+            });
+            await API.post(`/answers`, {
+              Value: 0,
+              FK_idQuestion: 12,
+              FK_idUser: allSubjectUser.id,
+              FK_idChapter: chapterNumber,
+              subject_user_id: myDatas.data[0].id,
+            });
+            await API.post(`/answers`, {
+              Value: 0,
+              FK_idQuestion: 13,
+              FK_idUser: allSubjectUser.id,
+              FK_idChapter: chapterNumber,
+              subject_user_id: myDatas.data[0].id,
+            });
           })
         );
-        
+
       results().then(() => {
-        console.log('TERMINOOOO');
-        setData('close');
-      });            
+        console.log("TERMINOOOO");
+        setData("close");
+      });
     }
   }
-
 
   if (isLoadingS) {
     return (
@@ -209,9 +247,7 @@ const NewSurveyPage = () => {
           <h2>Encuestas creadas exitosamente</h2>
           <br />
           <h2>Se notificara a los estudiantes</h2>
-          <h2>
-            Gracias !
-          </h2>
+          <h2>Gracias !</h2>
           <Link to={Routes.HOME}>
             <Button type="primary" icon={<HomeOutlined />}>
               Inicio
@@ -220,18 +256,21 @@ const NewSurveyPage = () => {
         </div>
       </>
     );
-  }
-  else{
+  } else {
     return (
       <>
         <Layout>
           <Sider>
             <div>
-              <Avatar
-                icon={
-                  <Image src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png" />
-                }
-              />
+              {currentUser.profileimage === "" ? (
+                <Avatar
+                  icon={
+                    <Image src="https://i.pinimg.com/originals/e2/7c/87/e27c8735da98ec6ccdcf12e258b26475.png" />
+                  }
+                />
+              ) : (
+                <Avatar icon={<Image src={currentUser.profileimage} />} />
+              )}
             </div>
           </Sider>
           <Content>
@@ -249,9 +288,9 @@ const NewSurveyPage = () => {
                 ))}
               </Select>
             }
-  
+
             <h1 className="title">Seleccionar Capítulo:</h1>
-  
+
             {
               <Select
                 defaultValue="-Seleccionar-"
@@ -265,13 +304,15 @@ const NewSurveyPage = () => {
                 ))}
               </Select>
             }
-  
+
             <h1 className="title">Objetivo:</h1>
-  
+
             <h4>
-              {chapterDetails.data?.map((chapterDetail) => chapterDetail.Objetives)}
+              {chapterDetails.data?.map(
+                (chapterDetail) => chapterDetail.Objetives
+              )}
             </h4>
-  
+
             <Button
               type="primary"
               onClick={sendSurveys}
@@ -279,53 +320,50 @@ const NewSurveyPage = () => {
             >
               Generar Encuesta
             </Button>
-  
+
             <h1 className="title">Encuestas creadas</h1>
-        <Collapse defaultActiveKey={["2"]} onChange={callback}>
-          {answers.map((subject, index) => {
-            return (
-              <Panel header={subject.name} key={subject.id}>
-                <InfiniteScroll
-                  initialLoad={false}
-                  pageStart={0}
-                  //loadMore={handleInfiniteOnLoad}
-                  hasMore={true || false}
-                  useWindow={false}
-                  children={"test"}
-                >
-                  {subject.chapters.map((chapter, i) => {
-                    if (chapter.answers.length != 0) {
-                      if (chapter.answers[0].Value != "") {
-                        return (
-                          <List.Item key={i}>
-                            <List.Item.Meta
-                              title={
-                                <a href="#!">{chapter.Topic}</a>
-                              }
-                              description={
-                                "Encuesta creada el: " +
-                                chapter.answers[0].created_at.split("T")[0]
-                              }
-                            />
-                          </List.Item>
-                        );
-                      }
-                    } else {
-                      if (i == 0) {
-                        return (null);
-                      }
-                    }
-                  })}
-                </InfiniteScroll>
-              </Panel>
-            );
-          })}
-        </Collapse>
+            <Collapse defaultActiveKey={["2"]} onChange={callback}>
+              {answers.map((subject, index) => {
+                return (
+                  <Panel header={subject.name} key={subject.id}>
+                    <InfiniteScroll
+                      initialLoad={false}
+                      pageStart={0}
+                      //loadMore={handleInfiniteOnLoad}
+                      hasMore={true || false}
+                      useWindow={false}
+                      children={"test"}
+                    >
+                      {subject.chapters.map((chapter, i) => {
+                        if (chapter.answers.length != 0) {
+                          if (chapter.answers[0].Value != "") {
+                            return (
+                              <List.Item key={i}>
+                                <List.Item.Meta
+                                  title={<a href="#!">{chapter.Topic}</a>}
+                                  description={
+                                    "Encuesta creada el: " +
+                                    chapter.answers[0].created_at.split("T")[0]
+                                  }
+                                />
+                              </List.Item>
+                            );
+                          }
+                        } else {
+                          if (i == 0) {
+                            return null;
+                          }
+                        }
+                      })}
+                    </InfiniteScroll>
+                  </Panel>
+                );
+              })}
+            </Collapse>
           </Content>
         </Layout>
       </>
     );
   }
-  
 };
 export default withAuth(NewSurveyPage);

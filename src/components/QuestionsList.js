@@ -24,6 +24,7 @@ const { Text } = Typography;
 
 const QuestionsList = (props) => {
   const answer = JSON.parse(localStorage["survey"]).chapter.answers;
+  console.log(answer);
 
   const { isAuthenticated, isCheckingAuth, currentUser } = useAuth();
 
@@ -33,6 +34,13 @@ const QuestionsList = (props) => {
   const [answer3, setAnswer3] = useState(null);
   const [answer4, setAnswer4] = useState(null);
   const [answer5, setAnswer5] = useState(null);
+  const [answer6, setAnswer6] = useState(null);
+  const [answer7, setAnswer7] = useState(null);
+  const [answer8, setAnswer8] = useState(null);
+  const [answer9, setAnswer9] = useState(null);
+  const [answer10, setAnswer10] = useState(null);
+  const [answer11, setAnswer11] = useState(null);
+  const [answer12, setAnswer12] = useState(null);
   const [comment, setComment] = useState(null);
 
   function handleChange(value) {
@@ -56,6 +64,34 @@ const QuestionsList = (props) => {
       case "pregunta5":
         setAnswer5(value.target.value);
         break;
+
+      case "pregunta6":
+        setAnswer6(value.target.value);
+        break;
+
+      case "pregunta7":
+        setAnswer7(value.target.value);
+        break;
+
+      case "pregunta8":
+        setAnswer8(value.target.value);
+        break;
+
+      case "pregunta9":
+        setAnswer9(value.target.value);
+        break;
+
+      case "pregunta10":
+        setAnswer10(value.target.value);
+        break;
+
+      case "pregunta11":
+        setAnswer11(value.target.value);
+        break;
+
+      case "pregunta12":
+        setAnswer12(value.target.value);
+        break;
     }
   }
 
@@ -70,9 +106,16 @@ const QuestionsList = (props) => {
       answer2 == null ||
       answer3 == null ||
       answer4 == null ||
-      answer5 == null
+      answer5 == null ||
+      answer6 == null ||
+      answer7 == null ||
+      answer8 == null ||
+      answer9 == null ||
+      answer10 == null ||
+      answer11 == null ||
+      answer12 == null
     ) {
-      window.alert("Debe contestar todas las preguntas");
+      message.warning("Debes contestar todas las preguntas");
     } else {
       try {
         setInProgress(true);
@@ -91,8 +134,29 @@ const QuestionsList = (props) => {
         await API.put(`/answers/` + answer[4].id, {
           Value: answer5,
         });
+        await API.put(`/answers/` + answer[5].id, {
+          Value: answer6,
+        });
+        await API.put(`/answers/` + answer[6].id, {
+          Value: answer7,
+        });
+        await API.put(`/answers/` + answer[7].id, {
+          Value: answer8,
+        });
+        await API.put(`/answers/` + answer[8].id, {
+          Value: answer9,
+        });
+        await API.put(`/answers/` + answer[9].id, {
+          Value: answer10,
+        });
+        await API.put(`/answers/` + answer[10].id, {
+          Value: answer11,
+        });
+        await API.put(`/answers/` + answer[11].id, {
+          Value: answer12,
+        });
         if (comment != null) {
-          await API.put(`/answers/` + answer[5].id, {
+          await API.put(`/answers/` + answer[12].id, {
             Value: comment,
           });
         }
@@ -116,7 +180,6 @@ const QuestionsList = (props) => {
 
   const { questions, isLoading, isError, mutate } = useQuestionsList();
 
-  const load = true;
   if (isLoading) {
     return (
       <Row justify="center" gutter={30} style={{ backgroundColor: "white" }}>
@@ -163,7 +226,7 @@ const QuestionsList = (props) => {
         <Row id={"questionRow" + index} key={"questionRow" + index}>
           {question.Type === "Cerrada" ? (
             <div>
-              {question.Text}
+              {index + 1 + ".- " + question.Text}
               <br />
               <Radio.Group
                 key={question.Text}
@@ -183,9 +246,6 @@ const QuestionsList = (props) => {
                 </Radio>
                 <Radio key={index + 3} value={4}>
                   4
-                </Radio>
-                <Radio key={index + 4} value={5}>
-                  5
                 </Radio>
               </Radio.Group>
             </div>
