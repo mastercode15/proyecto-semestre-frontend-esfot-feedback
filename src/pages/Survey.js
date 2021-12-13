@@ -6,11 +6,13 @@ import QuestionsList from "../components/QuestionsList";
 import { CheckCircleOutlined, HomeOutlined } from "@ant-design/icons";
 import Routes from "../constants/routes";
 import { Link } from "react-router-dom";
+import { useAuth } from "../providers/Auth";
 
 const { Sider, Content } = Layout;
 const question = QuestionsList;
 
 const PrivatePage = (props) => {
+  const { currentUser } = useAuth();
   // console.log(props.location.data);
   const [data, setData] = useState(undefined);
 
@@ -53,11 +55,15 @@ const PrivatePage = (props) => {
         <Layout>
           <Sider breakpoint={"md"} style={{ textAlign: "center" }}>
             <div>
-              <Avatar
-                icon={
-                  <Image src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png" />
-                }
-              />
+              {currentUser.profileimage === "" ? (
+                <Avatar
+                  icon={
+                    <Image src="https://i.pinimg.com/originals/e2/7c/87/e27c8735da98ec6ccdcf12e258b26475.png" />
+                  }
+                />
+              ) : (
+                <Avatar icon={<Image src={currentUser.profileimage} />} />
+              )}
             </div>
           </Sider>
 
