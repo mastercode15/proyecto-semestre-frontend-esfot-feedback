@@ -353,6 +353,16 @@ span.ant-avatar.ant-avatar-circle.ant-avatar-icon {
 .ant-skeleton.ant-skeleton-element.ant-skeleton-active {
   width: 100%;
 }
+
+.ant-spin-lg .ant-spin-dot i {
+  width: 40px;
+  height: 40px;
+}
+
+.ant-spin-lg .ant-spin-dot {
+  font-size: 0px;
+}
+
 /*// Extra small devices (portrait phones, less than 576px)*/
 /*!*@media (max-width: 575.98px) { ... }*!*/
 
