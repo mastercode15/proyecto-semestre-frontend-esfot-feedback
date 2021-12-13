@@ -2972,10 +2972,10 @@
   "resolved" "https://registry.npmjs.org/chardet/-/chardet-0.7.0.tgz"
   "version" "0.7.0"
 
-"chart.js@^1.1.1", "chart.js@^3.5.0":
-  "integrity" "sha1-qbFwVCIL1Fy9sXb9a8uHg++HGn0="
-  "resolved" "https://registry.npmjs.org/chart.js/-/chart.js-1.1.1.tgz"
-  "version" "1.1.1"
+"chart.js@^3.5.0", "chart.js@^3.6.2":
+  "integrity" "sha512-Xz7f/fgtVltfQYWq0zL1Xbv7N2inpG+B54p3D5FSvpCdy3sM+oZhbqa42eNuYXltaVvajgX5UpKCU2GeeJIgxg=="
+  "resolved" "https://registry.npmjs.org/chart.js/-/chart.js-3.6.2.tgz"
+  "version" "3.6.2"
 
 "chokidar@^2.1.8":
   "integrity" "sha512-ZmZUazfOzf0Nve7duiCKD23PFSCs4JPoYyccjUFF3aQkQadqBhfzhjkwBH2mNOG9cTBwhamM37EIsIkZw3nRgg=="
