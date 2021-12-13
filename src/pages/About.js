@@ -2,15 +2,13 @@ import React, {useState, useEffect} from 'react';
 import {Card, Col, Row, Select, Skeleton, Table, List, message, Divider} from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useSubjectsListChapters } from "../data/useSubjectsListChapters";
-import { useQuestionsList } from "../data/useQuestionsList";
-import { useAnswersByChapter } from "../data/useAnswersByChapter";
-
 import API from "../data";
 import ShowError from "../components/ShowError";
-import Avatar from "antd/es/avatar/avatar";
+import {Bar} from 'react-chartjs-2'
+import { Chart, registerables } from 'chart.js';
 
 const { Option } = Select;
-
+Chart.register(...registerables);
 const Dashboard = props => {
     const {chapterBySubjects, isLoadingS, isErrorS} = useSubjectsListChapters();
     const [dashboard, setDashboard] = useState(false);
@@ -21,7 +19,75 @@ const Dashboard = props => {
     const [valuesq, setValuesq] = useState([]);
     const [valuesOpen, setValuesOpen] = useState([]);
     const [question, setQuestion] = useState([]);
+    const state = {
+        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+        datasets: [{
+            label: '# of Votes',
+            data: [3, 4, 3, 5, 2, 3, 3, 4, 3, 5, 2, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
 
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+
+                'rgba(54, 162, 235, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(54, 162, 235, 1)',
+
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+            ],
+            borderWidth: 1
+        }]
+    }
+
+    const barValues = {
+        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+        datasets: [{
+            label: 'Ponderación',
+            data: valuesq,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+
+                'rgba(54, 162, 235, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(54, 162, 235, 1)',
+
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 206, 86, 1)',
+            ],
+            borderWidth: 1
+        }]
+    }
 
     const [data, setData] = useState([]);
     const columns = [
@@ -253,10 +319,34 @@ const Dashboard = props => {
         if(question.data){
             return (
                 <>
-                    <h2>HOLAAA</h2>
                     <h2> Materia: {subjectName}</h2>
                     <h2> Capítulo: {chapterName}</h2>
                     <h2> Objetivo: {chapterObjective}</h2>
+                    <div>
+                        <Bar
+                            data={barValues}
+                            options={{
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero:true
+                                        }
+                                    }]
+                                },
+                                title:{
+                                    display:true,
+                                    text:'Ponderación de preguntas',
+                                    fontSize:20
+                                },
+                                legend:{
+                                    display:true,
+                                    position:'right'
+                                }
+                            }}
+                        />
+                    </div>
 
                     {
                         question.data?.map((questions, j) => (
@@ -264,26 +354,18 @@ const Dashboard = props => {
                             <h4>{j + 1}. {questions.Text}</h4>
                                 {
                                     j!=12?
-                                    <h5>{
-                                        valuesq[j]
-                                    }
-                                    </h5>
+                                    null
                                         :
                                         valuesOpen?
                                             <InfiniteScroll
                                                 dataLength={valuesOpen.length}
                                                 hasMore={data.length < 3}
                                                 loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-                                                endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
                                                 scrollableTarget="scrollableDiv"
                                             >
                                                 <List
                                                     size="small"
                                                     bordered
-                                                    dataSource={valuesOpen}
-                                                    renderItem={item => <List.Item>{item}</List.Item>}
-                                                />
-                                                <List
                                                     dataSource={valuesOpen}
                                                     renderItem={item => <List.Item>{item}</List.Item>}
                                                 />
