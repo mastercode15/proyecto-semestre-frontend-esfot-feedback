@@ -10,16 +10,16 @@ const Logout = () => {
   useEffect(() => {
     async function doLogout() {
       try {
-        console.log("loggin out");
-        await API.post("/logout");
-        Cookies.remove("token");
-        delete API.headers["Authorization"];
-        window.localStorage.setItem("login", JSON.stringify(false));
-        setAuthenticated(false);
-        setCurrentUser(null);
+        console.log( 'loggin out' );
+        await API.post( '/logout' );
+        Cookies.remove( 'token' );
+        delete API.headers[ 'Authorization' ];
+        window.localStorage.setItem( 'login', JSON.stringify( false ) );
+        setAuthenticated( false );
+        setCurrentUser( null );
         window.location.reload(true);
-      } catch (e) {
-        console.log("e", e);
+      } catch( e ) {
+        console.log( 'e', e );
       }
     }
 

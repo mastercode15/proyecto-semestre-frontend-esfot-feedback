@@ -1,11 +1,12 @@
 import React from "react";
-import { Layout, Avatar, Image } from "antd";
+import { Layout, Avatar, Image, Col, Row, Radio, Input, Button } from "antd";
 import { useAuth } from "../providers/Auth";
 import { useAnswersList } from "../data/useAnswersList";
 import AnswersList from "../components/AnswersList";
 import ShowError from "../components/ShowError";
 const { Sider, Content } = Layout;
 const answer = AnswersList;
+
 const AboutPage = () => {
   const { currentUser } = useAuth();
   return (
@@ -35,5 +36,6 @@ const AboutPage = () => {
     </>
   );
 };
+
 
 export default AboutPage;
