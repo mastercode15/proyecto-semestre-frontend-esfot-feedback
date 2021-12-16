@@ -35,7 +35,7 @@ const SubjectsList = ( props ) => {
 
         <ul>
           {
-            subjects.map( ( subject ) => (
+            subjects?.map( ( subject ) => (
               <li key={subject.id}>{subject.name}</li>
             ) )
           }

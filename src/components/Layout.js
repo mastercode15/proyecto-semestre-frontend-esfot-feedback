@@ -119,11 +119,11 @@ const MainLayout = (props) => {
               <p>
                 <WhatsAppOutlined />{" "}
                 <a
-                  href="https://wa.me/593983927151"
+                  href="https://wa.me/5981230929"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  +593 9-8392-7151
+                  +593 9-8123-0929
                 </a>
               </p>
               <p>

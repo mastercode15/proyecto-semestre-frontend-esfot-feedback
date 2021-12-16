@@ -26,6 +26,8 @@ import {
   Button,
   Collapse,
   List,
+  Spin,
+  message,
 } from "antd";
 const { Sider, Content } = Layout;
 function callback(key) {
@@ -59,11 +61,14 @@ const NewSurveyPage = () => {
 
   var { allSubjectUsers } = useSubjectUsers();
   const [subjectChapters, setSubjectChapters] = useState([]);
+  const [chapterData, setChapterData] = useState(undefined);
+
   const [chapterDetails, setChapterDetails] = useState([]);
 
   const [surveySubject, setSurveySubject] = useState("");
   const [surveyChapter, setSurveyChapter] = useState("");
   const [data, setData] = useState(undefined);
+  const [buttonData, setButtonData] = useState(undefined);
 
   async function handleChangeSubject(value) {
     console.log(`selected ${value}`);
@@ -73,6 +78,7 @@ const NewSurveyPage = () => {
     setSurveyChapter("");
     setSubjectUsers(value);
     setSubjectChapters(await API.get(`/subjectChapters/${value}`));
+    setChapterData("close");
   }
 
   async function handleChangeChapters(value) {
@@ -83,9 +89,11 @@ const NewSurveyPage = () => {
   }
 
   async function sendSurveys() {
+
     if (surveySubject === "" || surveyChapter === "") {
-      alert("Seleccione la materia y el capítulo");
+      message.warning("Seleccione la materia y el capítulo");
     } else {
+      setButtonData("close")
       console.log(
         "subject => " + surveySubject + "  chapter => " + surveyChapter
       );
@@ -239,7 +247,7 @@ const NewSurveyPage = () => {
   if (data !== undefined) {
     return (
       <>
-        <div style={{ textAlign: "center" }}>
+        <div style={({ textAlign: "center", margin:"5%"})}>
           <CheckCircleOutlined
             style={{ fontSize: "153px", color: "#1F3F6C" }}
           />
@@ -249,7 +257,11 @@ const NewSurveyPage = () => {
           <h2>Se notificara a los estudiantes</h2>
           <h2>Gracias !</h2>
           <Link to={Routes.HOME}>
-            <Button type="primary" icon={<HomeOutlined />}>
+            <Button
+                type="primary"
+                icon={<HomeOutlined />}
+                style={{ backgroundColor: "#001529", borderColor: "#001529" }}
+            >
               Inicio
             </Button>
           </Link>
@@ -273,9 +285,7 @@ const NewSurveyPage = () => {
               )}
             </div>
           </Sider>
-          <Content>
-            <h1 className="title">Crear encuesta</h1>
-            <h2>Nombre: {currentUser.name}</h2>
+          <Content  style={({ margin: '2rem' })}>
             <h1 className="title">Seleccionar Materia:</h1>
             {
               <Select
@@ -292,17 +302,23 @@ const NewSurveyPage = () => {
             <h1 className="title">Seleccionar Capítulo:</h1>
 
             {
-              <Select
-                defaultValue="-Seleccionar-"
-                style={{ width: 300, marginLeft: 20 }}
-                onChange={handleChangeChapters}
-              >
-                {subjectChapters.data?.map((subjectChapter) => (
-                  <Option value={subjectChapter.id}>
-                    {subjectChapter.Topic}
-                  </Option>
-                ))}
-              </Select>
+              chapterData!=undefined?
+                  <Select
+                      defaultValue="-Seleccionar-"
+                      style={{ width: 300, marginLeft: 20 }}
+                      onChange={handleChangeChapters}
+                  >
+                    {
+                      subjectChapters.data?.map((subjectChapter) => (
+                          <Option value={subjectChapter.id}>
+                            {subjectChapter.Topic}
+                          </Option>
+                      ))}
+                  </Select>
+
+                  :
+                  <Spin style={({ marginLeft: '2rem' }, {color:"#001529"})} tip="Loading..." />
+
             }
 
             <h1 className="title">Objetivo:</h1>
@@ -313,13 +329,27 @@ const NewSurveyPage = () => {
               )}
             </h4>
 
-            <Button
-              type="primary"
-              onClick={sendSurveys}
-              style={{ backgroundColor: "#001529", borderColor: "#001529" }}
-            >
-              Generar Encuesta
-            </Button>
+            {
+              buttonData==undefined?
+                  <Button
+                      type="primary"
+                      onClick={sendSurveys}
+                      style={{ backgroundColor: "#001529", borderColor: "#001529" }}
+                  >
+                    Generar Encuesta
+                  </Button>
+                  :
+                  <Button
+                      type="primary"
+                      style={{ backgroundColor: "#001529", borderColor: "#001529" }}
+                      loading
+                  >
+                    Generando Encuestas
+                  </Button>
+            }
+
+
+
 
             <h1 className="title">Encuestas creadas</h1>
             <Collapse defaultActiveKey={["2"]} onChange={callback}>
@@ -340,7 +370,7 @@ const NewSurveyPage = () => {
                             return (
                               <List.Item key={i}>
                                 <List.Item.Meta
-                                  title={<a href="#!">{chapter.Topic}</a>}
+                                  title={<p href="#!">{chapter.Topic}</p>}
                                   description={
                                     "Encuesta creada el: " +
                                     chapter.answers[0].created_at.split("T")[0]

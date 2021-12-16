@@ -1,15 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import {Card, Col, Row, Select, Skeleton, Table, List, message, Divider} from 'antd';
+import {Card, Col, Row, Select, Skeleton, Table, List, message, Divider, Layout, Button, Avatar, Image} from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useSubjectsListChapters } from "../data/useSubjectsListChapters";
 import API from "../data";
 import ShowError from "../components/ShowError";
 import {Bar} from 'react-chartjs-2'
 import { Chart, registerables } from 'chart.js';
+import {HomeOutlined, StepBackwardFilled, CaretLeftFilled, LeftCircleFilled, LeftSquareFilled, BackwardFilled} from "@ant-design/icons";
+import {useAuth} from "../providers/Auth";
 
 const { Option } = Select;
+const { Sider, Content } = Layout;
 Chart.register(...registerables);
 const Dashboard = props => {
+    const { currentUser } = useAuth();
     const {chapterBySubjects, isLoadingS, isErrorS} = useSubjectsListChapters();
     const [dashboard, setDashboard] = useState(false);
     const [subjectName, setSubjectName] = useState('');
@@ -19,45 +23,25 @@ const Dashboard = props => {
     const [valuesq, setValuesq] = useState([]);
     const [valuesOpen, setValuesOpen] = useState([]);
     const [question, setQuestion] = useState([]);
-    const state = {
-        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
-        datasets: [{
-            label: '# of Votes',
-            data: [3, 4, 3, 5, 2, 3, 3, 4, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(255, 206, 86, 1)',
-            ],
-            borderWidth: 1
-        }]
-    }
+    const [question1, setQuestion1] = useState([]);
 
     const barValues = {
-        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+        labels: [
+            'El docente desarrolla el Curso de manera ordenada cubriendo todos los temas planteados',
+            'El profesor utiliza los recursos necesarios para que entiendas y aprendas la materia',
+            'El docente finaliza la materia en el tiempo establecido',
+            'Los métodos del profesor te ayudaron a comprender mejor el tema',
+            'El profesor resuelve las dudas de manera clara y precisa',
+            'El profesor relaciona ejemplos reales con temas tratados en clase',
+            'El profesor envía tareas basadas en lo que se ha visto en clase',
+            'El profesor evalúa los conocimientos que ha impartido en la clase',
+            'El profesor da retroalimentación de los trabajos y las pruebas realizados',
+            'El profesor fue motivador y entusiasta',
+            'El profesor genera confianza para que se le pueda realizar preguntas',
+            'El profesor trata a los estudiantes con respeto'
+        ],
         datasets: [{
-            label: 'Ponderación',
+            label: "Ponderación",
             data: valuesq,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -88,6 +72,8 @@ const Dashboard = props => {
             borderWidth: 1
         }]
     }
+    const valuesOpen2 = ["HOLA", "Holis", "Holu" ,"HOLA", "Holis", "Holu" ,"HOLA", "Holis", "Holu" ,"HOLA", "Holis", "Holu" ,"HOLA", "Holis", "Holu" , ]
+
 
     const [data, setData] = useState([]);
     const columns = [
@@ -178,7 +164,14 @@ const Dashboard = props => {
             })
         }).then(()=>{
             console.log('TERMINO ' , theAnswer);
-
+            if(question){
+                question.map((questions, i) =>{
+                    if (questions.Type !="cerrada") {
+                        console.log('Preguntitas ' + questions.Type + '   ' + questions.Text)
+                        setQuestion1(oldArray => [...oldArray, questions.Text]);
+                    }
+                })
+            }
             Object.keys(totalAnswers).map((item, i) => (
                 totalAnswers[item].map((answer,ind) =>{
                     if(answer.Value != 0){
@@ -319,70 +312,107 @@ const Dashboard = props => {
         if(question.data){
             return (
                 <>
-                    <h2> Materia: {subjectName}</h2>
-                    <h2> Capítulo: {chapterName}</h2>
-                    <h2> Objetivo: {chapterObjective}</h2>
-                    <div>
-                        <Bar
-                            data={barValues}
-                            options={{
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero:true
+                    <Layout>
+                        <Sider>
+                            <div>
+                                {currentUser.profileimage === "" ? (
+                                    <Avatar
+                                        icon={
+                                            <Image src="https://i.pinimg.com/originals/e2/7c/87/e27c8735da98ec6ccdcf12e258b26475.png" />
                                         }
-                                    }]
-                                },
-                                title:{
-                                    display:true,
-                                    text:'Ponderación de preguntas',
-                                    fontSize:20
-                                },
-                                legend:{
-                                    display:true,
-                                    position:'right'
-                                }
-                            }}
-                        />
-                    </div>
+                                    />
+                                ) : (
+                                    <Avatar icon={<Image src={currentUser.profileimage} />} />
+                                )}
+                            </div>
+                        </Sider>
+                        <Content style={{ margin: "1rem" }}>
+                            <div style={{textAlign: 'center'}}>
+                                <Row>
+                                    <Col span={24}>
+                                        <h2> Materia: {subjectName}</h2>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col span={12}>
+                                        <h3> Capítulo: {chapterName}</h3>
+                                    </Col>
+                                    <Col span={12}>
+                                        <h3> Objetivo: {chapterObjective}</h3>
+                                    </Col>
+                                </Row>
 
-                    {
-                        question.data?.map((questions, j) => (
-                            <>
-                            <h4>{j + 1}. {questions.Text}</h4>
+                            </div>
+                            <div>
+                                <Bar
+                                    data={barValues}
+                                    options={{
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        scales: {
+                                            yAxes: [{
+                                                ticks: {
+                                                    beginAtZero:true
+                                                }
+                                            }],
+                                            x: {
+                                                ticks: {
+                                                    display: false,
+                                                }
+                                            }
+                                        },
+                                        title:{
+                                            display:true,
+                                            text:'Ponderación de preguntas',
+                                            fontSize:20
+                                        },
+                                        legend:{
+                                            display:true,
+                                            position:'right'
+                                        }
+                                    }}
+                                />
+                            </div>
+
+                            <h4> Preguntas abiertas: </h4>
+                            <div style={{ overflow: 'auto', padding: '5px 5px', height: '225px'}}>
                                 {
-                                    j!=12?
-                                    null
+                                    valuesOpen.length!=0?
+                                    <InfiniteScroll
+                                        dataLength={valuesOpen.length}
+                                        hasMore={data.length < 3}
+                                        scrollableTarget="scrollableDiv"
+                                    >
+                                        <List
+                                            size="small"
+                                            bordered
+                                            dataSource={valuesOpen}
+                                            renderItem={item => <List.Item>{item}</List.Item>}
+                                        />
+                                    </InfiniteScroll>
                                         :
-                                        valuesOpen?
-                                            <InfiniteScroll
-                                                dataLength={valuesOpen.length}
-                                                hasMore={data.length < 3}
-                                                loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-                                                scrollableTarget="scrollableDiv"
-                                            >
-                                                <List
-                                                    size="small"
-                                                    bordered
-                                                    dataSource={valuesOpen}
-                                                    renderItem={item => <List.Item>{item}</List.Item>}
-                                                />
-                                            </InfiniteScroll>
-                                            :
-                                            null
-
+                                        null
                                 }
-                            </>
-                        ))
-                    }
-                    <a  onClick={()=>{
-                        setDashboard(false)
-                        setQuestion([])
-                    }}>
-                        Regresar
-                    </a>
+                            </div>
+
+                            <Button
+                                onClick={()=>{
+                                    setDashboard(false)
+                                    setQuestion([])
+                                    setValuesq([])
+                                    setValuesOpen([])
+                                    setTheAnswer([])
+                                }}
+                                type="primary"
+                                icon={<StepBackwardFilled />}
+                                style={{ backgroundColor: "#001529", borderColor: "#001529" }}
+                            >
+                                Regresar
+                            </Button>
+                        </Content>
+
+                    </Layout>
+
 
                 </>
             );
@@ -407,19 +437,36 @@ const Dashboard = props => {
     else {
         return (
             <>
-                <h1 className='title'>
-                    Dashboard
-                </h1>
-                <Table
-                    columns={columns}
-                    dataSource={data}
-                    pagination={
-                        {
-                            defaultPageSize: 5,
-                            showSizeChanger: true,
-                            pageSizeOptions: ['5', '10', '20']
-                        }
-                    } />
+                <Layout>
+                    <Sider>
+                        <div>
+                            {currentUser.profileimage === "" ? (
+                                <Avatar
+                                    icon={
+                                        <Image src="https://i.pinimg.com/originals/e2/7c/87/e27c8735da98ec6ccdcf12e258b26475.png" />
+                                    }
+                                />
+                            ) : (
+                                <Avatar icon={<Image src={currentUser.profileimage} />} />
+                            )}
+                        </div>
+                    </Sider>
+                    <Content style={{ margin: "2rem" }}>
+                        <h2 className='title' style={{textAlign: 'center'}}>
+                            Resumen de encuestas realizadas
+                        </h2>
+                        <Table
+                            columns={columns}
+                            dataSource={data}
+                            pagination={
+                                {
+                                    defaultPageSize: 5,
+                                    showSizeChanger: true,
+                                    pageSizeOptions: ['5', '10', '20']
+                                }
+                            } />
+                    </Content>
+                </Layout>
 
             </>
         );

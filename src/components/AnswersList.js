@@ -93,7 +93,7 @@ const AnswerList = () => {
                           <List.Item key={i}>
                             <List.Item.Meta
                               title={
-                                <a href="https://ant.design">{chapter.Topic}</a>
+                                <p>{chapter.Topic}</p>
                               }
                               description={chapter.Objetives}
                             />
@@ -160,7 +160,7 @@ const AnswerList = () => {
                         <List.Item key={i}>
                           <List.Item.Meta
                             title={
-                              <a href="https://ant.design">{chapter.Topic}</a>
+                              <p>{chapter.Topic}</p>
                             }
                             description={
                               "Encuesta respondida el: " +
