@@ -58,7 +58,7 @@ const ProfilePage = () => {
             )}
           </div>
         </Sider>
-        <Content>
+        <Content style={{ margin:"2rem" }}>
           <h1 className="title">Perfil de usuario</h1>
           <h2>
             <ul>

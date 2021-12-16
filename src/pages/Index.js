@@ -11,7 +11,7 @@ import principalLogo from "../images/logonormal.png";
 const HomePage = () => {
   return (
     <>
-      <Row justify="center">
+      <Row justify="center" style={{marginTop:"2rem" }}>
         <img src={principalLogo} height={100} alt="logo principal" />
       </Row>
       <br />
