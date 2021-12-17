@@ -7305,6 +7305,16 @@
   "resolved" "https://registry.npmjs.org/node-releases/-/node-releases-1.1.60.tgz"
   "version" "1.1.60"
 
+"nodemailer-react@^1.0.1":
+  "integrity" "sha512-PiRjM4ViWzyHe0RxmOYx3zJdQPoTDqwZ+cgKecSXy7PBQNVcVgTBfMQrGHQzgQ8mRS6AnowqW+uTxnfxOhO+kg=="
+  "resolved" "https://registry.npmjs.org/nodemailer-react/-/nodemailer-react-1.0.1.tgz"
+  "version" "1.0.1"
+
+"nodemailer@^5.1.1", "nodemailer@^6.7.2":
+  "integrity" "sha512-Dz7zVwlef4k5R71fdmxwR8Q39fiboGbu3xgswkzGwczUfjp873rVxt1O46+Fh0j1ORnAC6L9+heI8uUpO6DT7Q=="
+  "resolved" "https://registry.npmjs.org/nodemailer/-/nodemailer-6.7.2.tgz"
+  "version" "6.7.2"
+
 "normalize-package-data@^2.3.2":
   "integrity" "sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA=="
   "resolved" "https://registry.npmjs.org/normalize-package-data/-/normalize-package-data-2.5.0.tgz"
@@ -9305,7 +9315,7 @@
     "strip-ansi" "6.0.0"
     "text-table" "0.2.0"
 
-"react-dom@*", "react-dom@^0.14.0 || ^15.0.1 || ^16.0.0", "react-dom@^16.0.0", "react-dom@^16.14.0", "react-dom@^16.8.0", "react-dom@>=16.9.0":
+"react-dom@*", "react-dom@^0.14.0 || ^15.0.1 || ^16.0.0", "react-dom@^16.0.0", "react-dom@^16.14.0", "react-dom@^16.8.0", "react-dom@>= 15", "react-dom@>=16.9.0":
   "integrity" "sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-16.14.0.tgz"
   "version" "16.14.0"
@@ -9428,7 +9438,7 @@
   optionalDependencies:
     "fsevents" "2.1.2"
 
-"react@*", "react@^0.14.0 || ^15.0.0 || ^16.0.0", "react@^0.14.0 || ^15.0.1 || ^16.0.0", "react@^0.14.9 || ^15.3.0 || ^16.0.0", "react@^16.0.0", "react@^16.11.0", "react@^16.14.0", "react@^16.8.0", "react@^16.8.0 || ^17.0.0", "react@>=15", "react@>=16.0.0", "react@>=16.3.0", "react@>=16.9.0", "react@16.x":
+"react@*", "react@^0.14.0 || ^15.0.0 || ^16.0.0", "react@^0.14.0 || ^15.0.1 || ^16.0.0", "react@^0.14.9 || ^15.3.0 || ^16.0.0", "react@^16.0.0", "react@^16.11.0", "react@^16.14.0", "react@^16.8.0", "react@^16.8.0 || ^17.0.0", "react@>= 15", "react@>=15", "react@>=16.0.0", "react@>=16.3.0", "react@>=16.9.0", "react@16.x":
   "integrity" "sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g=="
   "resolved" "https://registry.npmjs.org/react/-/react-16.14.0.tgz"
   "version" "16.14.0"
