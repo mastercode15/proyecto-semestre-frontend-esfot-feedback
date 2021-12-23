@@ -140,7 +140,7 @@ const AnswerList = () => {
           );
         })}
       </Collapse>
-      <h2>Encuestas Realizas:</h2>
+      <h2>Encuestas Realizadas:</h2>
       <Collapse onChange={callback}>
         {answers.map((subject, index) => {
           return (
