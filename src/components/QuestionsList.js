@@ -183,7 +183,7 @@ const QuestionsList = (props) => {
   if (isLoading) {
     return (
       <Row justify="center" gutter={30} style={{ backgroundColor: "white" }}>
-        {[...new Array(5)].map((_, i) => (
+        {[...new Array(12)].map((_, i) => (
           <Col span={24} style={{ marginBottom: 2 }} key={i}>
             <Skeleton
               active
