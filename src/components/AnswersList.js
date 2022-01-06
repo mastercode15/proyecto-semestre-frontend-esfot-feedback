@@ -25,7 +25,7 @@ function callback(key) {
   console.log(key);
 }
 
-const AnswerList = () => {
+const AnswersList = () => {
   const { answers, isLoading, isError, mutate } = useAnswersList();
   console.log(answers);
 
@@ -92,9 +92,7 @@ const AnswerList = () => {
                         return (
                           <List.Item key={i}>
                             <List.Item.Meta
-                              title={
-                                <p>{chapter.Topic}</p>
-                              }
+                              title={<p>{chapter.Topic}</p>}
                               description={chapter.Objetives}
                             />
                             <Button
@@ -159,9 +157,7 @@ const AnswerList = () => {
                       return (
                         <List.Item key={i}>
                           <List.Item.Meta
-                            title={
-                              <p>{chapter.Topic}</p>
-                            }
+                            title={<p>{chapter.Topic}</p>}
                             description={
                               "Encuesta respondida el: " +
                               chapter.answers[0].updated_at.split("T")[0]
@@ -191,4 +187,4 @@ const AnswerList = () => {
   );
 };
 
-export default AnswerList;
+export default AnswersList;

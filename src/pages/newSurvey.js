@@ -45,6 +45,7 @@ const NewSurveyPage = () => {
   const [subjectNumber, setSubjectNumber] = useState(null);
   const [chapterNumber, setChapterNumber] = useState(null);
   const [subjectUsers, setSubjectUsers] = useState(null);
+  const [chapterValue, setChapterValue] = useState("-Seleccionar-");
 
   function useSubjectUsers() {
     const { data, error, mutate } = useSWR(
@@ -69,31 +70,40 @@ const NewSurveyPage = () => {
   const [surveyChapter, setSurveyChapter] = useState("");
   const [data, setData] = useState(undefined);
   const [buttonData, setButtonData] = useState(undefined);
+  const [disabled, setDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   async function handleChangeSubject(value) {
     console.log(`selected ${value}`);
+    setChapterValue("-Seleccionar-");
     setSubjectNumber(value);
     setChapterNumber(null);
     setSurveySubject(value);
     setSurveyChapter("");
     setSubjectUsers(value);
+    setLoading(true);
+    setDisabled(true);
+    setChapterDetails([]);
     setSubjectChapters(await API.get(`/subjectChapters/${value}`));
+    setLoading(false);
+    setDisabled(false);
     setChapterData("close");
   }
 
-  async function handleChangeChapters(value) {
+  async function handleChangeChapters(value, object) {
     console.log(`selected ${value}`);
+    console.log(`selectedname ${object.title}`);
+    setChapterValue(object.title);
     setChapterNumber(value);
     setSurveyChapter(value);
     setChapterDetails(await API.get(`/myChapters/${value}`));
   }
 
   async function sendSurveys() {
-
     if (surveySubject === "" || surveyChapter === "") {
       message.warning("Seleccione la materia y el capítulo");
     } else {
-      setButtonData("close")
+      setButtonData("close");
       console.log(
         "subject => " + surveySubject + "  chapter => " + surveyChapter
       );
@@ -247,7 +257,7 @@ const NewSurveyPage = () => {
   if (data !== undefined) {
     return (
       <>
-        <div style={({ textAlign: "center", margin:"5%"})}>
+        <div style={{ textAlign: "center", margin: "5%" }}>
           <CheckCircleOutlined
             style={{ fontSize: "153px", color: "#1F3F6C" }}
           />
@@ -258,9 +268,9 @@ const NewSurveyPage = () => {
           <h2>Gracias !</h2>
           <Link to={Routes.HOME}>
             <Button
-                type="primary"
-                icon={<HomeOutlined />}
-                style={{ backgroundColor: "#001529", borderColor: "#001529" }}
+              type="primary"
+              icon={<HomeOutlined />}
+              style={{ backgroundColor: "#001529", borderColor: "#001529" }}
             >
               Inicio
             </Button>
@@ -285,7 +295,7 @@ const NewSurveyPage = () => {
               )}
             </div>
           </Sider>
-          <Content  style={({ margin: '2rem' })}>
+          <Content style={{ margin: "2rem" }}>
             <h1 className="title">Seleccionar Materia:</h1>
             {
               <Select
@@ -301,25 +311,20 @@ const NewSurveyPage = () => {
 
             <h1 className="title">Seleccionar Capítulo:</h1>
 
-            {
-              chapterData!=undefined?
-                  <Select
-                      defaultValue="-Seleccionar-"
-                      style={{ width: 300, marginLeft: 20 }}
-                      onChange={handleChangeChapters}
-                  >
-                    {
-                      subjectChapters.data?.map((subjectChapter) => (
-                          <Option value={subjectChapter.id}>
-                            {subjectChapter.Topic}
-                          </Option>
-                      ))}
-                  </Select>
-
-                  :
-                  <Spin style={({ marginLeft: '2rem' }, {color:"#001529"})} tip="Loading..." />
-
-            }
+            <Select
+              defaultValue="-Seleccionar-"
+              style={{ width: 300, marginLeft: 20 }}
+              onChange={handleChangeChapters}
+              disabled={disabled}
+              loading={loading}
+              value={chapterValue}
+            >
+              {subjectChapters.data?.map((subjectChapter) => (
+                <Option value={subjectChapter.id} title={subjectChapter.Topic}>
+                  {subjectChapter.Topic}
+                </Option>
+              ))}
+            </Select>
 
             <h1 className="title">Objetivo:</h1>
 
@@ -329,27 +334,23 @@ const NewSurveyPage = () => {
               )}
             </h4>
 
-            {
-              buttonData==undefined?
-                  <Button
-                      type="primary"
-                      onClick={sendSurveys}
-                      style={{ backgroundColor: "#001529", borderColor: "#001529" }}
-                  >
-                    Generar Encuesta
-                  </Button>
-                  :
-                  <Button
-                      type="primary"
-                      style={{ backgroundColor: "#001529", borderColor: "#001529" }}
-                      loading
-                  >
-                    Generando Encuestas
-                  </Button>
-            }
-
-
-
+            {buttonData == undefined ? (
+              <Button
+                type="primary"
+                onClick={sendSurveys}
+                style={{ backgroundColor: "#001529", borderColor: "#001529" }}
+              >
+                Generar Encuesta
+              </Button>
+            ) : (
+              <Button
+                type="primary"
+                style={{ backgroundColor: "#001529", borderColor: "#001529" }}
+                loading
+              >
+                Generando Encuestas
+              </Button>
+            )}
 
             <h1 className="title">Encuestas creadas</h1>
             <Collapse defaultActiveKey={["2"]} onChange={callback}>
