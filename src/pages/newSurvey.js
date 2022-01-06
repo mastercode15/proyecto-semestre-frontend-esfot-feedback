@@ -326,8 +326,7 @@ const NewSurveyPage = () => {
               ))}
             </Select>
 
-            <h1 className="title">Objetivo:</h1>
-
+            {chapterDetails.data && <h1 className="title">Objetivo:</h1>}
             <h4>
               {chapterDetails.data?.map(
                 (chapterDetail) => chapterDetail.Objetives
