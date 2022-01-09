@@ -309,128 +309,129 @@ const Dashboard = props => {
 
 
     if (dashboard){
-        if(question.data){
-            return (
-                <>
-                    <Layout>
-                        <Sider>
-                            <div>
-                                {currentUser.profileimage === "" ? (
-                                    <Avatar
-                                        icon={
-                                            <Image src="https://i.pinimg.com/originals/e2/7c/87/e27c8735da98ec6ccdcf12e258b26475.png" />
-                                        }
-                                    />
-                                ) : (
-                                    <Avatar icon={<Image src={currentUser.profileimage} />} />
-                                )}
-                            </div>
-                        </Sider>
-                        <Content style={{ margin: "1rem" }}>
-                            <div style={{textAlign: 'center'}}>
-                                <Row>
-                                    <Col span={24}>
-                                        <h2> Materia: {subjectName}</h2>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col span={12}>
-                                        <h3> Capítulo: {chapterName}</h3>
-                                    </Col>
-                                    <Col span={12}>
-                                        <h3> Objetivo: {chapterObjective}</h3>
-                                    </Col>
-                                </Row>
-
-                            </div>
-                            <div>
-                                <Bar
-                                    data={barValues}
-                                    options={{
-                                        responsive: true,
-                                        maintainAspectRatio: false,
-                                        scales: {
-                                            yAxes: [{
-                                                ticks: {
-                                                    beginAtZero:true
-                                                }
-                                            }],
-                                            x: {
-                                                ticks: {
-                                                    display: false,
-                                                }
-                                            }
-                                        },
-                                        title:{
-                                            display:true,
-                                            text:'Ponderación de preguntas',
-                                            fontSize:20
-                                        },
-                                        legend:{
-                                            display:true,
-                                            position:'right'
-                                        }
-                                    }}
+        return (
+            <>
+                <Layout>
+                    <Sider>
+                        <div>
+                            {currentUser.profileimage === "" ? (
+                                <Avatar
+                                    icon={
+                                        <Image src="https://i.pinimg.com/originals/e2/7c/87/e27c8735da98ec6ccdcf12e258b26475.png" />
+                                    }
                                 />
-                            </div>
+                            ) : (
+                                <Avatar icon={<Image src={currentUser.profileimage} />} />
+                            )}
+                        </div>
+                    </Sider>
 
-                            <h4> Preguntas abiertas: </h4>
-                            <div style={{ overflow: 'auto', padding: '5px 5px', height: '225px'}}>
-                                {
-                                    valuesOpen.length!=0?
-                                    <InfiniteScroll
-                                        dataLength={valuesOpen.length}
-                                        hasMore={data.length < 3}
-                                        scrollableTarget="scrollableDiv"
-                                    >
-                                        <List
-                                            size="small"
-                                            bordered
-                                            dataSource={valuesOpen}
-                                            renderItem={item => <List.Item>{item}</List.Item>}
-                                        />
-                                    </InfiniteScroll>
-                                        :
-                                        null
-                                }
-                            </div>
+                    {
+                        question.data?
+                            <Content style={{ margin: "1rem" }}>
+                                <div style={{textAlign: 'center'}}>
+                                    <Row>
+                                        <Col span={24}>
+                                            <h2> Materia: {subjectName}</h2>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col span={12}>
+                                            <h3> Capítulo: {chapterName}</h3>
+                                        </Col>
+                                        <Col span={12}>
+                                            <h3> Objetivo: {chapterObjective}</h3>
+                                        </Col>
+                                    </Row>
 
-                            <Button
-                                onClick={()=>{
-                                    setDashboard(false)
-                                    setQuestion([])
-                                    setValuesq([])
-                                    setValuesOpen([])
-                                    setTheAnswer([])
-                                }}
-                                type="primary"
-                                icon={<StepBackwardFilled />}
-                                style={{ backgroundColor: "#001529", borderColor: "#001529" }}
-                            >
-                                Regresar
-                            </Button>
-                        </Content>
+                                </div>
+                                <div>
+                                    <Bar
+                                        data={barValues}
+                                        options={{
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                            scales: {
+                                                yAxes: [{
+                                                    ticks: {
+                                                        beginAtZero:true
+                                                    }
+                                                }],
+                                                x: {
+                                                    ticks: {
+                                                        display: false,
+                                                    }
+                                                }
+                                            },
+                                            title:{
+                                                display:true,
+                                                text:'Ponderación de preguntas',
+                                                fontSize:20
+                                            },
+                                            legend:{
+                                                display:true,
+                                                position:'right'
+                                            }
+                                        }}
+                                    />
+                                </div>
 
-                    </Layout>
+                                <h4> Preguntas abiertas: </h4>
+                                <div style={{ overflow: 'auto', padding: '5px 5px', height: '225px'}}>
+                                    {
+                                        valuesOpen.length!=0?
+                                            <InfiniteScroll
+                                                dataLength={valuesOpen.length}
+                                                hasMore={data.length < 3}
+                                                scrollableTarget="scrollableDiv"
+                                            >
+                                                <List
+                                                    size="small"
+                                                    bordered
+                                                    dataSource={valuesOpen}
+                                                    renderItem={item => <List.Item>{item}</List.Item>}
+                                                />
+                                            </InfiniteScroll>
+                                            :
+                                            null
+                                    }
+                                </div>
+
+                                <Button
+                                    onClick={()=>{
+                                        setDashboard(false)
+                                        setQuestion([])
+                                        setValuesq([])
+                                        setValuesOpen([])
+                                        setTheAnswer([])
+                                    }}
+                                    type="primary"
+                                    icon={<StepBackwardFilled />}
+                                    style={{ backgroundColor: "#001529", borderColor: "#001529" }}
+                                >
+                                    Regresar
+                                </Button>
+                            </Content>
+                            :<Row justify="center" gutter={30}>
+                                {[...new Array(9)].map((_, i) => (
+                                    <Col xs={24} sm={12} md={8} style={{ marginBottom: 30 }} key={i}>
+                                        <div style={{ textAlign: "center" }}>
+                                            <Skeleton.Input style={{ width: 600 }}/>
+                                            <Card title="" extra="" cover="" loading />
+                                        </div>
+                                    </Col>
+                                ))}
+                            </Row>
+                    }
 
 
-                </>
-            );
-        }
-        else {
-            return (
-                <Row justify="center" gutter={30}>
-                    {[...new Array(9)].map((_, i) => (
-                        <Col xs={24} sm={12} md={8} style={{ marginBottom: 30 }} key={i}>
-                            <div style={{ textAlign: "center" }}>
-                                <Skeleton.Input style={{ width: 600 }}/>
-                                <Card title="" extra="" cover="" loading />
-                            </div>
-                        </Col>
-                    ))}
-                </Row>
-            );
-        }
+                </Layout>
+
+
+            </>
+        );
+
+
 
     }
 

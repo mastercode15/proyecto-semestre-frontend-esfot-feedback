@@ -17,7 +17,8 @@ import {
 import InfiniteScroll from "react-infinite-scroller";
 import { useAnswersList } from "../data/useAnswersList";
 import ShowError from "./ShowError";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import API from "../data";
 const { Panel } = Collapse;
 const fakeDataUrl =
   "https://randomuser.me/api/?results=5&inc=name,gender,email,nat&noinfo";
@@ -28,6 +29,7 @@ function callback(key) {
 const AnswersList = () => {
   const { answers, isLoading, isError, mutate } = useAnswersList();
   console.log(answers);
+  const history = useHistory();
 
   if (isLoading) {
     return (
@@ -90,33 +92,39 @@ const AnswersList = () => {
                       if (chapter.answers[0].Value == 0) {
                         console.log("pendiente");
                         return (
-                          <List.Item key={i}>
-                            <List.Item.Meta
-                              title={<p>{chapter.Topic}</p>}
-                              description={chapter.Objetives}
-                            />
-                            <Button
-                              onClick={() =>
-                                localStorage.setItem(
-                                  "survey",
-                                  JSON.stringify({
-                                    subject: subject.name,
-                                    teacher: "teacher",
-                                    chapter: chapter,
-                                  })
-                                )
-                              }
-                            >
-                              <Link
-                                to={{
-                                  pathname: "/survey",
-                                  data: chapter,
-                                }}
+                            <List.Item key={i}>
+                              <List.Item.Meta
+                                  title={
+                                    <a href="https://ant.design">{chapter.Topic}</a>
+                                  }
+                                  description={chapter.Objetives}
+                              />
+                              <Button
+                                  onClick={
+                                    async() =>{
+                                      let teachers = "";
+                                      const results = async () =>{
+                                        teachers = await API.get(
+                                            `/subjectTeacher/${subject.id}`
+                                        );
+                                      }
+                                      results().then(() => {
+                                        localStorage.setItem(
+                                            "survey",
+                                            JSON.stringify({
+                                              subject: subject.name,
+                                              teacher: teachers.data[0].name,
+                                              chapter: chapter,
+                                            })
+                                        )
+                                        history.push('/survey')
+                                      })
+                                    }
+                                  }
                               >
                                 Realizar Encuesta
-                              </Link>
-                            </Button>
-                          </List.Item>
+                              </Button>
+                            </List.Item>
                         );
                       }
                     }

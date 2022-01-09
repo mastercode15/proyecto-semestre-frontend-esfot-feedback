@@ -54,6 +54,15 @@ const Navigation = (props) => {
         {
           isAuthenticated
             ? <>
+
+                {/* new survey */
+                  //console.log('HOLAAA ' + (currentUser.role))
+                  currentUser.role === 'ROLE_ADMIN'?
+                      <Menu.Item key={Routes.ARTICLES}>
+                        <Link to={Routes.ARTICLES} style={linkStyle}>Administración</Link>
+                      </Menu.Item>
+                      : null
+                }
               
               {/* new survey */
                 //console.log('HOLAAA ' + (currentUser.role))
@@ -72,7 +81,7 @@ const Navigation = (props) => {
                   <Link to={Routes.PENDINGSURVEYS} style={linkStyle}>Encuestas</Link>
                 </Menu.Item>
                 : null
-                
+
               }
 
               {/* dashboard */
@@ -85,9 +94,15 @@ const Navigation = (props) => {
               }
               
               <Menu.SubMenu icon={<UserOutlined />} title={currentUser && currentUser.name}>
-                <Menu.Item key={Routes.PROFILE}>
-                  <Link to={Routes.PROFILE} style={linkStyle}>Perfil</Link>
-                </Menu.Item>
+                {/* dashboard */
+                  //console.log('HOLAAA ' + (currentUser.role))
+                  currentUser.role !== 'ROLE_ADMIN'?
+                      <Menu.Item key={Routes.PROFILE}>
+                        <Link to={Routes.PROFILE} style={linkStyle}>Perfil</Link>
+                      </Menu.Item>
+                      : null
+                }
+
 
                 <Menu.Item key={Routes.LOGIN}>
                   <Link to={Routes.LOGOUT} className='logout-link'>
