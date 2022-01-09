@@ -93,9 +93,8 @@ const PrivatePage = (props) => {
               <br />
               <h4>Intsrucciones:</h4>
               <h4>
-                {" "}
-                Seleccione una calificación para la pregunta siendo 1 la
-                calificación mas baja y 5 la calificación mas alta
+                Seleccione una calificación para cada afirmación, siendo 1
+                "Totalmente en desacuerdo" y 4 "Muy de acuerdo"
               </h4>
               <br />
 
