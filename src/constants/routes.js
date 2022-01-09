@@ -9,7 +9,7 @@ const publicRoutes = {
   USERS: '/usuarios',
   USERS_ID: `/usuario/:id`,
   HOME: '/',
-  ABOUT: '/acerca-de',
+  ABOUT: '/dashboard',
   NEWSURVEY: '/newSurvey',
   ANTD: '/antd',
   PROFILE: '/perfil'
