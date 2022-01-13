@@ -249,7 +249,6 @@ const Dashboard = (props) => {
       id="scrollableDiv"
       style={{
         height: 400,
-        width: "100%",
         overflow: "auto",
         padding: "0 16px",
         border: "1px solid rgba(140, 140, 140, 0.35)",
@@ -697,12 +696,8 @@ const Dashboard = (props) => {
               <div>
                 <Divider />
                 <Row>
-                  {compare && (
-                    <Col xs={24} md={5}>
-                      {questinList}
-                    </Col>
-                  )}
-                  <Col xs={colSpan} md={24}>
+                  {compare && <Col span={5}>{questinList}</Col>}
+                  <Col span={colSpan}>
                     <Bar
                       data={dataChart}
                       options={{
