@@ -12,6 +12,7 @@ import {
   Button,
   Avatar,
   Image,
+  Divider,
 } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSubjectsListChapters } from "../data/useSubjectsListChapters";
@@ -21,6 +22,7 @@ import { Bar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { FundOutlined, StepBackwardFilled } from "@ant-design/icons";
 import { useAuth } from "../providers/Auth";
+import { set } from "nprogress";
 
 const { Option } = Select;
 const { Sider, Content } = Layout;
@@ -41,22 +43,11 @@ const Dashboard = (props) => {
   const [valuesq1, setValuesq1] = useState([]);
   const [valuesOpen, setValuesOpen] = useState([]);
   const [question, setQuestion] = useState([]);
+  const [questions, setQuestions] = useState([]);
+  const [defaultQuestions, setDefaultQuestions] = useState([]);
 
   const barValues = {
-    labels: [
-      "El docente desarrolla el Curso de manera ordenada cubriendo todos los temas planteados",
-      "El profesor utiliza los recursos necesarios para que entiendas y aprendas la materia",
-      "El docente finaliza la materia en el tiempo establecido",
-      "Los métodos del profesor te ayudaron a comprender mejor el tema",
-      "El profesor resuelve las dudas de manera clara y precisa",
-      "El profesor relaciona ejemplos reales con temas tratados en clase",
-      "El profesor envía tareas basadas en lo que se ha visto en clase",
-      "El profesor evalúa los conocimientos que ha impartido en la clase",
-      "El profesor da retroalimentación de los trabajos y las pruebas realizados",
-      "El profesor fue motivador y entusiasta",
-      "El profesor genera confianza para que se le pueda realizar preguntas",
-      "El profesor trata a los estudiantes con respeto",
-    ],
+    labels: questions,
     datasets: [
       {
         label: "Ponderación",
@@ -93,20 +84,7 @@ const Dashboard = (props) => {
   };
 
   const barValuesComparison = {
-    labels: [
-      "El docente desarrolla el Curso de manera ordenada cubriendo todos los temas planteados",
-      "El profesor utiliza los recursos necesarios para que entiendas y aprendas la materia",
-      "El docente finaliza la materia en el tiempo establecido",
-      "Los métodos del profesor te ayudaron a comprender mejor el tema",
-      "El profesor resuelve las dudas de manera clara y precisa",
-      "El profesor relaciona ejemplos reales con temas tratados en clase",
-      "El profesor envía tareas basadas en lo que se ha visto en clase",
-      "El profesor evalúa los conocimientos que ha impartido en la clase",
-      "El profesor da retroalimentación de los trabajos y las pruebas realizados",
-      "El profesor fue motivador y entusiasta",
-      "El profesor genera confianza para que se le pueda realizar preguntas",
-      "El profesor trata a los estudiantes con respeto",
-    ],
+    labels: defaultQuestions,
     datasets: [
       {
         label: chapterName,
@@ -174,28 +152,38 @@ const Dashboard = (props) => {
   };
 
   let dataChart = {};
+  let colSpan = 24;
+  let scales = {};
   if (compare) {
     dataChart = barValuesComparison;
+    colSpan = 19;
+    scales = {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+    };
   } else {
     dataChart = barValues;
+    scales = {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+      x: {
+        ticks: {
+          display: false,
+        },
+      },
+    };
   }
-  const valuesOpen2 = [
-    "HOLA",
-    "Holis",
-    "Holu",
-    "HOLA",
-    "Holis",
-    "Holu",
-    "HOLA",
-    "Holis",
-    "Holu",
-    "HOLA",
-    "Holis",
-    "Holu",
-    "HOLA",
-    "Holis",
-    "Holu",
-  ];
+
   const handleChange = (value) => {
     console.log("aquii:");
     console.log(value.currentTarget.style.visibility);
@@ -255,6 +243,34 @@ const Dashboard = (props) => {
       },
     },
   ];
+
+  const questinList = (
+    <div
+      id="scrollableDiv"
+      style={{
+        height: 400,
+        width: "100%",
+        overflow: "auto",
+        padding: "0 16px",
+        border: "1px solid rgba(140, 140, 140, 0.35)",
+      }}
+    >
+      <InfiniteScroll
+        dataLength={question.data?.length - 1}
+        scrollableTarget="scrollableDiv"
+      >
+        <List
+          dataSource={question.data}
+          renderItem={(item, i) => (
+            <List.Item>
+              {item.Type === "Cerrada" && `${i + 1}. ${item.Text}`}
+            </List.Item>
+          )}
+        />
+      </InfiniteScroll>
+    </div>
+  );
+
   let mychapter = [];
   let chapter2compare = [];
   let totalAnswers = [];
@@ -436,7 +452,6 @@ const Dashboard = (props) => {
 
     const results = async () => {
       chapter2compare = await API.get(`/chapter/${chapterId}/answers`);
-      setQuestion(await API.get(`/question`));
     };
 
     results()
@@ -578,6 +593,17 @@ const Dashboard = (props) => {
     }
   }, [chapterBySubjects, isLoadingS]);
 
+  useEffect(() => {
+    // eslint-disable-next-line no-unused-expressions
+    question.data?.map((item, i) => {
+      // eslint-disable-next-line no-unused-expressions
+      if (item.Type === "Cerrada") {
+        setQuestions((prevState) => [...prevState, item.Text]);
+        setDefaultQuestions((prevState) => [...prevState, `Pregunta ${i + 1}`]);
+      }
+    });
+  }, [question]);
+
   if (isLoadingS) {
     return (
       <Row justify="center" gutter={30}>
@@ -659,7 +685,6 @@ const Dashboard = (props) => {
                 <Button
                   onClick={() => {
                     setDashboard(false);
-                    setQuestion([]);
                     setCompare(true);
                   }}
                   type="primary"
@@ -670,36 +695,33 @@ const Dashboard = (props) => {
                 </Button>
               )}
               <div>
-                <Bar
-                  data={dataChart}
-                  options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                      yAxes: [
-                        {
-                          ticks: {
-                            beginAtZero: true,
-                          },
+                <Divider />
+                <Row>
+                  {compare && (
+                    <Col xs={24} md={5}>
+                      {questinList}
+                    </Col>
+                  )}
+                  <Col xs={colSpan} md={24}>
+                    <Bar
+                      data={dataChart}
+                      options={{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: scales,
+                        title: {
+                          display: true,
+                          text: "Ponderación de preguntas",
+                          fontSize: 20,
                         },
-                      ],
-                      x: {
-                        ticks: {
-                          display: false,
+                        legend: {
+                          display: true,
+                          position: "right",
                         },
-                      },
-                    },
-                    title: {
-                      display: true,
-                      text: "Ponderación de preguntas",
-                      fontSize: 20,
-                    },
-                    legend: {
-                      display: true,
-                      position: "right",
-                    },
-                  }}
-                />
+                      }}
+                    />
+                  </Col>
+                </Row>
               </div>
 
               <h4> Preguntas abiertas: </h4>
@@ -730,6 +752,8 @@ const Dashboard = (props) => {
                 onClick={() => {
                   setDashboard(false);
                   setQuestion([]);
+                  setQuestions([]);
+                  setDefaultQuestions([]);
                   setValuesq([]);
                   setValuesOpen([]);
                   setCompare(false);
