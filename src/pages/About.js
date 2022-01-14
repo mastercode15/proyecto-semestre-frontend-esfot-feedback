@@ -626,7 +626,7 @@ const Dashboard = (props) => {
     return (
       <>
         <Layout>
-          <Sider>
+          <Sider breakpoint={"md"} style={{ textAlign: "center" }}>
             <div>
               {currentUser.profileimage === "" ? (
                 <Avatar
@@ -785,7 +785,7 @@ const Dashboard = (props) => {
     return (
       <>
         <Layout>
-          <Sider>
+          <Sider breakpoint={"md"} style={{ textAlign: "center" }}>
             <div>
               {currentUser.profileimage === "" ? (
                 <Avatar
