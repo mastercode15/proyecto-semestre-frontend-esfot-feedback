@@ -696,7 +696,11 @@ const Dashboard = (props) => {
                       {questinList}
                     </Col>
                   )}
-                  <Col xs={24} md={colSpan}>
+                  <Col
+                    xs={24}
+                    md={colSpan}
+                    style={{ height: "100% !important" }}
+                  >
                     <Bar
                       data={dataChart}
                       options={{
