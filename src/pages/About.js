@@ -245,15 +245,7 @@ const Dashboard = (props) => {
   ];
 
   const questinList = (
-    <div
-      id="scrollableDiv"
-      style={{
-        height: 400,
-        overflow: "auto",
-        padding: "0 16px",
-        border: "1px solid rgba(140, 140, 140, 0.35)",
-      }}
-    >
+    <div id="scrollableDiv">
       <InfiniteScroll
         dataLength={question.data?.length - 1}
         scrollableTarget="scrollableDiv"
@@ -263,6 +255,9 @@ const Dashboard = (props) => {
           renderItem={(item, i) => (
             <List.Item>
               {item.Type === "Cerrada" && `${i + 1}. ${item.Text}`}
+              {item.Type === "Cerrada" && (
+                <Divider className="scrollableDivider" />
+              )}
             </List.Item>
           )}
         />
@@ -671,10 +666,10 @@ const Dashboard = (props) => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col span={12}>
+                    <Col xs={24} md={12}>
                       <h3> Capítulo: {chapterName}</h3>
                     </Col>
-                    <Col span={12}>
+                    <Col xs={24} md={12}>
                       <h3> Objetivo: {chapterObjective}</h3>
                     </Col>
                   </Row>
@@ -696,8 +691,12 @@ const Dashboard = (props) => {
               <div>
                 <Divider />
                 <Row>
-                  {compare && <Col span={5}>{questinList}</Col>}
-                  <Col span={colSpan}>
+                  {compare && (
+                    <Col xs={24} md={5}>
+                      {questinList}
+                    </Col>
+                  )}
+                  <Col xs={24} md={colSpan}>
                     <Bar
                       data={dataChart}
                       options={{

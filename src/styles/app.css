@@ -363,6 +363,33 @@ span.ant-avatar.ant-avatar-circle.ant-avatar-icon {
   font-size: 0px;
 }
 
+@media (min-width: 768px) and (max-width: 820px) {
+  .ant-row-space-between {
+    justify-content: normal;
+  }
+}
+#scrollableDiv {
+  height: 400px;
+  overflow: auto;
+  padding: 0px 16px;
+  border: 1px solid rgba(140, 140, 140, 0.35);
+}
+@media (max-width: 768px) {
+  #scrollableDiv {
+    height: 150px;
+    overflow: auto;
+    padding: 0px 16px;
+    border: 1px solid rgba(140, 140, 140, 0.35);
+  }
+}
+
+li.ant-list-item.ant-list-item-no-flex {
+  padding: 5px 0;
+}
+
+.scrollableDivider {
+  margin: 3px 0;
+}
 /*// Extra small devices (portrait phones, less than 576px)*/
 /*!*@media (max-width: 575.98px) { ... }*!*/
 
