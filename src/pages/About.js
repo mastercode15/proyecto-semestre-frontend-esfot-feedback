@@ -18,7 +18,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useSubjectsListChapters } from "../data/useSubjectsListChapters";
 import API from "../data";
 import ShowError from "../components/ShowError";
-import { Bar } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { FundOutlined, StepBackwardFilled } from "@ant-design/icons";
 import { useAuth } from "../providers/Auth";
@@ -45,6 +45,7 @@ const Dashboard = (props) => {
   const [question, setQuestion] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [defaultQuestions, setDefaultQuestions] = useState([]);
+  const [element, setElement] = useState();
 
   const barValues = {
     labels: questions,
@@ -158,24 +159,16 @@ const Dashboard = (props) => {
     dataChart = barValuesComparison;
     colSpan = 19;
     scales = {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-          },
-        },
-      ],
+      y: {
+        beginAtZero: true,
+      },
     };
   } else {
     dataChart = barValues;
     scales = {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-          },
-        },
-      ],
+      y: {
+        beginAtZero: true,
+      },
       x: {
         ticks: {
           display: false,
@@ -186,8 +179,12 @@ const Dashboard = (props) => {
 
   const handleChange = (value) => {
     console.log("aquii:");
-    console.log(value.currentTarget.style.visibility);
-    value.currentTarget.style.visibility = "hidden";
+    console.log(value.currentTarget.parentElement.parentElement);
+    setElement(
+      value.currentTarget.parentElement.parentElement.getAttribute(
+        "data-row-key"
+      )
+    );
   };
 
   const [data, setData] = useState([]);
@@ -677,9 +674,15 @@ const Dashboard = (props) => {
               )}
               {!compare && (
                 <Button
-                  onClick={() => {
+                  onClick={async () => {
                     setDashboard(false);
                     setCompare(true);
+                    await document.querySelector(
+                      `tr[data-row-key="${element}"]`
+                    );
+                    document
+                      .querySelector(`tr[data-row-key="${element.toString()}"]`)
+                      .remove();
                   }}
                   type="primary"
                   icon={<FundOutlined />}
@@ -809,9 +812,10 @@ const Dashboard = (props) => {
               columns={columns}
               dataSource={data}
               pagination={{
-                defaultPageSize: 5,
+                position: ["topLeft"],
+                defaultPageSize: 30,
                 showSizeChanger: true,
-                pageSizeOptions: ["5", "10", "20"],
+                pageSizeOptions: ["5", "10", "20", "30"],
               }}
             />
           </Content>
