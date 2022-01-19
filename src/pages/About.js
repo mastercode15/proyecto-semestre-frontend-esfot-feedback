@@ -1,10 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Card,
   Col,
   Row,
-  Select,
   Skeleton,
   Table,
   List,
@@ -14,17 +13,16 @@ import {
   Image,
   Divider,
 } from "antd";
+import { Gauge } from "@ant-design/plots";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSubjectsListChapters } from "../data/useSubjectsListChapters";
 import API from "../data";
 import ShowError from "../components/ShowError";
-import { Bar, Line } from "react-chartjs-2";
+import { Bar, Radar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { FundOutlined, StepBackwardFilled } from "@ant-design/icons";
 import { useAuth } from "../providers/Auth";
-import { set } from "nprogress";
 
-const { Option } = Select;
 const { Sider, Content } = Layout;
 Chart.register(...registerables);
 const Dashboard = (props) => {
@@ -47,6 +45,68 @@ const Dashboard = (props) => {
   const [defaultQuestions, setDefaultQuestions] = useState([]);
   const [element, setElement] = useState();
 
+  const finalRes = () => {
+    let res = 0;
+    valuesq.forEach((test) => (res += parseFloat(test)));
+    res = res / 48;
+
+    return res;
+  };
+
+  const ticks = [0, 1 / 3, 2 / 3, 1];
+  const color = ["#F4664A", "#FAAD14", "#30BF78"];
+  const graphRef = useRef(null);
+
+  //data for medidor
+  const config = {
+    percent: finalRes(),
+    range: {
+      ticks: [0, 1],
+      color: ["l(0) 0:#F4664A 0.5:#FAAD14 1:#30BF78"],
+    },
+    indicator: {
+      pointer: {
+        style: {
+          stroke: "#D0D0D0",
+        },
+      },
+      pin: {
+        style: {
+          stroke: "#D0D0D0",
+        },
+      },
+    },
+    statistic: {
+      title: {
+        formatter: ({ percent }) => {
+          if (percent < ticks[1]) {
+            return "Bajo(" + (finalRes() * 100).toFixed(2) + " %)";
+          }
+
+          if (percent < ticks[2]) {
+            return "Medio(" + (finalRes() * 100).toFixed(2) + " %)";
+          }
+
+          return "Alto(" + (finalRes() * 100).toFixed(2) + " %)";
+        },
+        style: ({ percent }) => {
+          return {
+            fontSize: "36px",
+            lineHeight: 1,
+            color:
+              percent < ticks[1]
+                ? color[0]
+                : percent < ticks[2]
+                ? color[1]
+                : color[2],
+          };
+        },
+      },
+    },
+    onReady: (plot) => {
+      graphRef.current = plot;
+    },
+  };
   const barValues = {
     labels: questions,
     datasets: [
@@ -80,6 +140,22 @@ const Dashboard = (props) => {
           "rgba(255, 206, 86, 1)",
         ],
         borderWidth: 1,
+      },
+    ],
+  };
+  const singleRadar = {
+    labels: ["cat 1", "cat 2", "cat 3", "cat 4"],
+    datasets: [
+      {
+        label: "My First Dataset",
+        data: [8, 10, 9, 5],
+        fill: true,
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        borderColor: "rgb(255, 99, 132)",
+        pointBackgroundColor: "rgb(255, 99, 132)",
+        pointBorderColor: "#fff",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgb(255, 99, 132)",
       },
     ],
   };
@@ -696,6 +772,7 @@ const Dashboard = (props) => {
                 <Row>
                   {compare && (
                     <Col xs={24} md={5}>
+                      <h4>Preguntas:</h4>
                       {questinList}
                     </Col>
                   )}
@@ -723,30 +800,51 @@ const Dashboard = (props) => {
                     />
                   </Col>
                 </Row>
-              </div>
-
-              <h4> Preguntas abiertas: </h4>
-              <div
-                style={{
-                  overflow: "auto",
-                  padding: "5px 5px",
-                  height: "225px",
-                }}
-              >
-                {valuesOpen.length != 0 ? (
-                  <InfiniteScroll
-                    dataLength={valuesOpen.length}
-                    hasMore={data.length < 3}
-                    scrollableTarget="scrollableDiv"
-                  >
-                    <List
-                      size="small"
-                      bordered
-                      dataSource={valuesOpen}
-                      renderItem={(item) => <List.Item>{item}</List.Item>}
+                <br />
+                <h4> Comentarios de estudiantes: </h4>
+                <div
+                  style={{
+                    overflow: "auto",
+                    padding: "5px 5px",
+                  }}
+                >
+                  {valuesOpen.length != 0 ? (
+                    <InfiniteScroll
+                      dataLength={valuesOpen.length}
+                      hasMore={data.length < 3}
+                      scrollableTarget="scrollableDiv"
+                    >
+                      <List
+                        size="small"
+                        bordered
+                        dataSource={valuesOpen}
+                        renderItem={(item) => <List.Item>{item}</List.Item>}
+                      />
+                    </InfiniteScroll>
+                  ) : null}
+                </div>
+                <br />
+                <Row style={{ justifyContent: "space-evenly" }}>
+                  <Col xs={24} md={11}>
+                    <h2>Rendimiento General</h2>
+                    <Gauge {...config} />
+                  </Col>
+                  <Col xs={24} md={11}>
+                    <h2>Rendimiento por categoría</h2>
+                    <Radar
+                      data={singleRadar}
+                      options={{
+                        responsive: true,
+                        scales: {
+                          r: {
+                            suggestedMin: 0,
+                            suggestedMax: 12,
+                          },
+                        },
+                      }}
                     />
-                  </InfiniteScroll>
-                ) : null}
+                  </Col>
+                </Row>
               </div>
 
               <Button
