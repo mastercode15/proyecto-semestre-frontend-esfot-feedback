@@ -18,7 +18,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useSubjectsListChapters } from "../data/useSubjectsListChapters";
 import API from "../data";
 import ShowError from "../components/ShowError";
-import { Bar, Radar } from "react-chartjs-2";
+import { Bar, Line, Radar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { FundOutlined, StepBackwardFilled } from "@ant-design/icons";
 import { useAuth } from "../providers/Auth";
@@ -160,6 +160,34 @@ const Dashboard = (props) => {
     ],
   };
 
+  const comparisonRadar = {
+    labels: ["cat 1", "cat 2", "cat 3", "cat 4"],
+    datasets: [
+      {
+        label: "My First Dataset",
+        data: [8, 10, 9, 5],
+        fill: true,
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        borderColor: "rgb(255, 99, 132)",
+        pointBackgroundColor: "rgb(255, 99, 132)",
+        pointBorderColor: "#fff",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgb(255, 99, 132)",
+      },
+      {
+        label: "My Second Dataset",
+        data: [2, 4, 10, 12],
+        fill: true,
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
+        borderColor: "rgb(54, 162, 235)",
+        pointBackgroundColor: "rgb(54, 162, 235)",
+        pointBorderColor: "#fff",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgb(54, 162, 235)",
+      },
+    ],
+  };
+
   const barValuesComparison = {
     labels: defaultQuestions,
     datasets: [
@@ -231,8 +259,10 @@ const Dashboard = (props) => {
   let dataChart = {};
   let colSpan = 24;
   let scales = {};
+  let radarData = {};
   if (compare) {
     dataChart = barValuesComparison;
+    radarData = comparisonRadar;
     colSpan = 19;
     scales = {
       y: {
@@ -241,6 +271,7 @@ const Dashboard = (props) => {
     };
   } else {
     dataChart = barValues;
+    radarData = singleRadar;
     scales = {
       y: {
         beginAtZero: true,
@@ -825,14 +856,41 @@ const Dashboard = (props) => {
                 </div>
                 <br />
                 <Row style={{ justifyContent: "space-evenly" }}>
-                  <Col xs={24} md={11}>
-                    <h2>Rendimiento General</h2>
-                    <Gauge {...config} />
-                  </Col>
+                  {compare ? (
+                    <Col xs={24} md={11}>
+                      <Line
+                        data={{
+                          labels: [subjectName, subjectNameToCompare],
+                          datasets: [
+                            {
+                              label: "Comparación de rendimiento",
+                              data: [4, 2],
+                              fill: false,
+                              borderColor: "rgb(75, 192, 192)",
+                              tension: 0.5,
+                            },
+                          ],
+                        }}
+                        options={{
+                          responsive: true,
+                          scales: {
+                            y: {
+                              beginAtZero: true,
+                            },
+                          },
+                        }}
+                      />
+                    </Col>
+                  ) : (
+                    <Col xs={24} md={11}>
+                      <h2>Rendimiento General</h2>
+                      <Gauge {...config} />
+                    </Col>
+                  )}
                   <Col xs={24} md={11}>
                     <h2>Rendimiento por categoría</h2>
                     <Radar
-                      data={singleRadar}
+                      data={radarData}
                       options={{
                         responsive: true,
                         scales: {
