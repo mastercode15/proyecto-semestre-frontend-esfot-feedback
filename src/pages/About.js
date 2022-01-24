@@ -13,12 +13,12 @@ import {
   Image,
   Divider,
 } from "antd";
-import { Gauge } from "@ant-design/plots";
+import { Gauge, RadialBar } from "@ant-design/plots";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSubjectsListChapters } from "../data/useSubjectsListChapters";
 import API from "../data";
 import ShowError from "../components/ShowError";
-import { Bar, Line, Radar } from "react-chartjs-2";
+import { Bar, Radar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { FundOutlined, StepBackwardFilled } from "@ant-design/icons";
 import { useAuth } from "../providers/Auth";
@@ -44,12 +44,28 @@ const Dashboard = (props) => {
   const [questions, setQuestions] = useState([]);
   const [defaultQuestions, setDefaultQuestions] = useState([]);
   const [element, setElement] = useState();
+  const [maxangle, setmaxAngle] = useState();
 
   const finalRes = () => {
     let res = 0;
-    valuesq.forEach((test) => (res += parseFloat(test)));
+    valuesq.forEach((val) => (res += parseFloat(val)));
     res = res / 48;
+    res = (res * 100).toFixed(2);
+    return res;
+  };
 
+  const finalResToCompare = () => {
+    let res1 = finalRes();
+    let res = 0;
+    valuesq1.forEach((val) => (res += parseFloat(val)));
+    res = res / 48;
+    res = (res * 100).toFixed(2);
+    if (parseInt(res1) > parseInt(res)) {
+      setmaxAngle(parseInt(res1) * 3.6);
+    } else {
+      setmaxAngle(parseInt(res) * 3.6);
+    }
+    console.log("---------->" + maxangle);
     return res;
   };
 
@@ -58,8 +74,8 @@ const Dashboard = (props) => {
   const graphRef = useRef(null);
 
   //data for medidor
-  const config = {
-    percent: finalRes(),
+  const medidorConfig = {
+    percent: finalRes() / 100,
     range: {
       ticks: [0, 1],
       color: ["l(0) 0:#F4664A 0.5:#FAAD14 1:#30BF78"],
@@ -80,14 +96,14 @@ const Dashboard = (props) => {
       title: {
         formatter: ({ percent }) => {
           if (percent < ticks[1]) {
-            return "Bajo(" + (finalRes() * 100).toFixed(2) + " %)";
+            return "Bajo(" + finalRes() + " %)";
           }
 
           if (percent < ticks[2]) {
-            return "Medio(" + (finalRes() * 100).toFixed(2) + " %)";
+            return "Medio(" + finalRes() + " %)";
           }
 
-          return "Alto(" + (finalRes() * 100).toFixed(2) + " %)";
+          return "Alto(" + finalRes() + " %)";
         },
         style: ({ percent }) => {
           return {
@@ -107,6 +123,59 @@ const Dashboard = (props) => {
       graphRef.current = plot;
     },
   };
+
+  //data for compare the rate of each subject
+
+  const DemoRadialBar = () => {
+    let data = [
+      {
+        alias: "cap. 1",
+        name: chapterName,
+        percent: finalRes() * 1,
+      },
+      {
+        alias: "cap. 2",
+        name: chapterNameToCompare,
+        percent: finalResToCompare() * 1,
+      },
+    ];
+    const config = {
+      data,
+      xField: "name",
+      yField: "percent",
+      xAxis: false,
+      maxAngle: maxangle,
+      radius: 0.8,
+      innerRadius: 0.2,
+      tooltip: {
+        formatter: (datum) => {
+          return {
+            name: "rendimiento",
+            value: datum.percent + "%",
+          };
+        },
+      },
+      colorField: "percent",
+      color: ({ percent }) => {
+        if (percent > 67) {
+          return "#30BF78";
+        } else if (percent > 34) {
+          return "#FAAD14";
+        }
+
+        return "#F4664A";
+      },
+      annotations: data.map((element) => ({
+        type: "html",
+        position: [element.name, 0],
+        html: `<div style="width:65px;transform:translate(-50%, -50%)">
+        ${element.alias}
+      </div>`,
+      })),
+    };
+    return <RadialBar {...config} />;
+  };
+
   const barValues = {
     labels: questions,
     datasets: [
@@ -858,33 +927,17 @@ const Dashboard = (props) => {
                 <Row style={{ justifyContent: "space-evenly" }}>
                   {compare ? (
                     <Col xs={24} md={11}>
-                      <Line
-                        data={{
-                          labels: [subjectName, subjectNameToCompare],
-                          datasets: [
-                            {
-                              label: "Comparación de rendimiento",
-                              data: [4, 2],
-                              fill: false,
-                              borderColor: "rgb(75, 192, 192)",
-                              tension: 0.5,
-                            },
-                          ],
-                        }}
-                        options={{
-                          responsive: true,
-                          scales: {
-                            y: {
-                              beginAtZero: true,
-                            },
-                          },
-                        }}
-                      />
+                      <h2>Comparación de rendimiento</h2>
+                      <h4>
+                        Pasa el cursor por la barra para saber conocer mas
+                        información
+                      </h4>
+                      <DemoRadialBar />
                     </Col>
                   ) : (
                     <Col xs={24} md={11}>
                       <h2>Rendimiento General</h2>
-                      <Gauge {...config} />
+                      <Gauge {...medidorConfig} />
                     </Col>
                   )}
                   <Col xs={24} md={11}>
@@ -912,6 +965,7 @@ const Dashboard = (props) => {
                   setQuestions([]);
                   setDefaultQuestions([]);
                   setValuesq([]);
+                  setValuesq1([]);
                   setValuesOpen([]);
                   setCompare(false);
                 }}
