@@ -40,6 +40,7 @@ const Dashboard = (props) => {
   const [valuesq, setValuesq] = useState([]);
   const [valuesq1, setValuesq1] = useState([]);
   const [valuesOpen, setValuesOpen] = useState([]);
+  const [valuesOpen1, setValuesOpen1] = useState([]);
   const [question, setQuestion] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [defaultQuestions, setDefaultQuestions] = useState([]);
@@ -169,7 +170,7 @@ const Dashboard = (props) => {
         type: "html",
         position: [element.name, 0],
         html: `<div style="width:65px;transform:translate(-50%, -50%)">
-        ${element.alias}
+        ${element.percent}%
       </div>`,
       })),
     };
@@ -329,16 +330,21 @@ const Dashboard = (props) => {
   let colSpan = 24;
   let scales = {};
   let radarData = {};
+  let compareTitle = "";
+  let commentsColumnSpan = 24;
   if (compare) {
+    compareTitle = `Comentarios para ${chapterName}:`;
     dataChart = barValuesComparison;
     radarData = comparisonRadar;
     colSpan = 19;
+    commentsColumnSpan = 12;
     scales = {
       y: {
         beginAtZero: true,
       },
     };
   } else {
+    compareTitle = "Comentarios de estudiantes:";
     dataChart = barValues;
     radarData = singleRadar;
     scales = {
@@ -672,7 +678,7 @@ const Dashboard = (props) => {
                 q12_1 = q12_1 + parseFloat(answer.Value);
                 tq12_1 = tq12_1 + 1;
               } else if (answer.FK_idQuestion == 13) {
-                setValuesOpen((oldArray) => [...oldArray, answer.Value]);
+                setValuesOpen1((oldArray) => [...oldArray, answer.Value]);
               } else {
                 console.log("No question");
               }
@@ -821,13 +827,26 @@ const Dashboard = (props) => {
                         {subjectName} | {subjectNameToCompare}
                       </h3>
                     </Col>
+                    <Col span={24}>
+                      <h3> Capítulos Comparados</h3>
+                    </Col>
+                    <Col span={24}>
+                      <h3>
+                        {chapterName} | {chapterNameToCompare}
+                      </h3>
+                    </Col>
                   </Row>
                   <Row style={{ justifyContent: "space-between" }}>
                     <Col xs={24} md={11} style={{ textAlign: "justify" }}>
-                      <h3> Objetivo materia 1: {chapterObjective}</h3>
+                      <h3>
+                        Objetivo ({chapterNameToCompare}): {chapterObjective}
+                      </h3>
                     </Col>
                     <Col xs={24} md={11} style={{ textAlign: "justify" }}>
-                      <h3> Objetivo materia 2: {chapterObjectiveToCompare}</h3>
+                      <h3>
+                        Objetivo ({chapterNameToCompare}):{" "}
+                        {chapterObjectiveToCompare}
+                      </h3>
                     </Col>
                   </Row>
                 </div>
@@ -901,28 +920,60 @@ const Dashboard = (props) => {
                   </Col>
                 </Row>
                 <br />
-                <h4> Comentarios de estudiantes: </h4>
-                <div
-                  style={{
-                    overflow: "auto",
-                    padding: "5px 5px",
-                  }}
-                >
-                  {valuesOpen.length != 0 ? (
-                    <InfiniteScroll
-                      dataLength={valuesOpen.length}
-                      hasMore={data.length < 3}
-                      scrollableTarget="scrollableDiv"
+                <Row style={{ justifyContent: "space-between" }}>
+                  <Col xs={24} md={commentsColumnSpan}>
+                    <h4>{compareTitle}</h4>
+                    <div
+                      style={{
+                        overflow: "auto",
+                        padding: "5px 5px",
+                      }}
                     >
-                      <List
-                        size="small"
-                        bordered
-                        dataSource={valuesOpen}
-                        renderItem={(item) => <List.Item>{item}</List.Item>}
-                      />
-                    </InfiniteScroll>
-                  ) : null}
-                </div>
+                      {valuesOpen.length != 0 ? (
+                        <InfiniteScroll
+                          dataLength={valuesOpen.length}
+                          hasMore={data.length < 3}
+                          scrollableTarget="scrollableDiv"
+                        >
+                          <List
+                            size="small"
+                            bordered
+                            dataSource={valuesOpen}
+                            renderItem={(item) => <List.Item>{item}</List.Item>}
+                          />
+                        </InfiniteScroll>
+                      ) : null}
+                    </div>
+                  </Col>
+                  {compare && (
+                    <Col xs={24} md={12}>
+                      <h4> Comentarios para {chapterNameToCompare}:</h4>
+                      <div
+                        style={{
+                          overflow: "auto",
+                          padding: "5px 5px",
+                        }}
+                      >
+                        {valuesOpen1.length != 0 ? (
+                          <InfiniteScroll
+                            dataLength={valuesOpen.length}
+                            hasMore={data.length < 3}
+                            scrollableTarget="scrollableDiv"
+                          >
+                            <List
+                              size="small"
+                              bordered
+                              dataSource={valuesOpen1}
+                              renderItem={(item) => (
+                                <List.Item>{item}</List.Item>
+                              )}
+                            />
+                          </InfiniteScroll>
+                        ) : null}
+                      </div>
+                    </Col>
+                  )}
+                </Row>
                 <br />
                 <Row style={{ justifyContent: "space-evenly" }}>
                   {compare ? (
@@ -967,6 +1018,7 @@ const Dashboard = (props) => {
                   setValuesq([]);
                   setValuesq1([]);
                   setValuesOpen([]);
+                  setValuesOpen1([]);
                   setCompare(false);
                 }}
                 type="primary"
