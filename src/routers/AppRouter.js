@@ -25,7 +25,7 @@ const AsyncLogin = loadable(() => import('../pages/Login'), loadableOptions);
 const AsyncRegister = loadable(() => import('../pages/Register'), loadableOptions);
 const AsyncPrivate = loadable(() => import('../pages/Survey'), loadableOptions);
 const AsyncPendingSurveys = loadable(() => import('../pages/PendingSurveys'), loadableOptions);
-const AsyncArticles = loadable(() => import('../pages/Articles'), loadableOptions);
+const AsyncArticles = loadable(() => import('../pages/Admin'), loadableOptions);
 const AsyncArticle = loadable(() => import('../pages/Article'), loadableOptions);
 const AsyncAbout = loadable(() => import('../pages/About'), loadableOptions);
 const AsyncProfile = loadable(() => import('../pages/Profile'), loadableOptions);
