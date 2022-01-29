@@ -52,9 +52,9 @@ const MainLayout = (props) => {
             <Header className="header">
               <Row type="flex" justify="space-between" align="bottom">
                 <Col xs={24} md={6} className="logo-wrapper">
-                  <a href={process.env.REACT_APP_DOMAIN}>
-                    <img className="logo" src={logo} alt="Grupo Menta" />
-                  </a>
+                    <Link to={Routes.HOME} >
+                      <img className="logo" src={logo}  />
+                    </Link>
                 </Col>
 
                 <Col md={14} align="right" className="main-menu">
