@@ -839,7 +839,7 @@ const Dashboard = (props) => {
                   <Row style={{ justifyContent: "space-between" }}>
                     <Col xs={24} md={11} style={{ textAlign: "justify" }}>
                       <h3>
-                        Objetivo ({chapterNameToCompare}): {chapterObjective}
+                        Objetivo ({chapterName}): {chapterObjective}
                       </h3>
                     </Col>
                     <Col xs={24} md={11} style={{ textAlign: "justify" }}>
