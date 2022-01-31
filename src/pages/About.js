@@ -180,12 +180,12 @@ const Dashboard = (props) => {
       {
         alias: "cap. 1",
         name: chapterName,
-        percent: finalRes() * 1,
+        percent: finalRes() * 1 || 0,
       },
       {
         alias: "cap. 2",
         name: chapterNameToCompare,
-        percent: finalResToCompare() * 1,
+        percent: finalResToCompare() * 1 || 0,
       },
     ];
     const config = {
