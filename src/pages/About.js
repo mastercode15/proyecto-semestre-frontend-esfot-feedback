@@ -37,6 +37,8 @@ const Dashboard = (props) => {
   const [chapterObjective, setChapterObjective] = useState("");
   const [chapterObjectiveToCompare, setChapterObjectiveToCompare] =
     useState("");
+  const [recivedCategories, setRecivedCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [valuesq, setValuesq] = useState([]);
   const [valuesq1, setValuesq1] = useState([]);
   const [valuesOpen, setValuesOpen] = useState([]);
@@ -68,6 +70,52 @@ const Dashboard = (props) => {
     }
     console.log("---------->" + maxangle);
     return res;
+  };
+
+  const handleCategories = (results) => {
+    let cat1positions = [];
+    let cat2positions = [];
+    let cat3positions = [];
+    let cat4positions = [];
+    let res1 = 0;
+    let res2 = 0;
+    let res3 = 0;
+    let res4 = 0;
+    // eslint-disable-next-line no-unused-expressions
+    question.data?.map((item) => {
+      if (item.category_id === 1) {
+        cat1positions.push(item.id);
+      }
+      if (item.category_id === 2) {
+        cat2positions.push(item.id);
+      }
+      if (item.category_id === 3) {
+        cat3positions.push(item.id);
+      }
+      if (item.category_id === 4) {
+        cat4positions.push(item.id);
+      }
+    });
+
+    cat1positions.map(
+      (item, i) => (res1 = res1 + parseFloat(results[item - 1]))
+    );
+    cat2positions.map(
+      (item, i) => (res2 = res2 + parseFloat(results[item - 1]))
+    );
+    cat3positions.map(
+      (item, i) => (res3 = res3 + parseFloat(results[item - 1]))
+    );
+    cat4positions.map(
+      (item, i) => (res4 = res4 + parseFloat(results[item - 1]))
+    );
+
+    return [
+      parseFloat(res1),
+      parseFloat(res2),
+      parseFloat(res3),
+      parseFloat(res4),
+    ];
   };
 
   const ticks = [0, 1 / 3, 2 / 3, 1];
@@ -214,11 +262,10 @@ const Dashboard = (props) => {
     ],
   };
   const singleRadar = {
-    labels: ["cat 1", "cat 2", "cat 3", "cat 4"],
+    labels: categories,
     datasets: [
       {
-        label: "My First Dataset",
-        data: [8, 10, 9, 5],
+        data: handleCategories(valuesq),
         fill: true,
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "rgb(255, 99, 132)",
@@ -231,11 +278,11 @@ const Dashboard = (props) => {
   };
 
   const comparisonRadar = {
-    labels: ["cat 1", "cat 2", "cat 3", "cat 4"],
+    labels: categories,
     datasets: [
       {
-        label: "My First Dataset",
-        data: [8, 10, 9, 5],
+        label: chapterName,
+        data: handleCategories(valuesq),
         fill: true,
         backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderColor: "rgb(255, 99, 132)",
@@ -245,8 +292,8 @@ const Dashboard = (props) => {
         pointHoverBorderColor: "rgb(255, 99, 132)",
       },
       {
-        label: "My Second Dataset",
-        data: [2, 4, 10, 12],
+        label: chapterNameToCompare,
+        data: handleCategories(valuesq1),
         fill: true,
         backgroundColor: "rgba(54, 162, 235, 0.2)",
         borderColor: "rgb(54, 162, 235)",
@@ -332,10 +379,12 @@ const Dashboard = (props) => {
   let radarData = {};
   let compareTitle = "";
   let commentsColumnSpan = 24;
+  let showLegend = false;
   if (compare) {
     compareTitle = `Comentarios para ${chapterName}:`;
     dataChart = barValuesComparison;
     radarData = comparisonRadar;
+    showLegend = true;
     colSpan = 19;
     commentsColumnSpan = 12;
     scales = {
@@ -479,6 +528,7 @@ const Dashboard = (props) => {
 
     const results = async () => {
       mychapter = await API.get(`/chapter/${chapterId}/answers`);
+      setRecivedCategories(await API.get(`/categories`));
       setQuestion(await API.get(`/question`));
     };
 
@@ -770,12 +820,20 @@ const Dashboard = (props) => {
     // eslint-disable-next-line no-unused-expressions
     question.data?.map((item, i) => {
       // eslint-disable-next-line no-unused-expressions
+      console.log(item);
       if (item.Type === "Cerrada") {
         setQuestions((prevState) => [...prevState, item.Text]);
         setDefaultQuestions((prevState) => [...prevState, `Pregunta ${i + 1}`]);
       }
     });
   }, [question]);
+
+  useEffect(() => {
+    // eslint-disable-next-line no-unused-expressions
+    recivedCategories.data?.map((item) => {
+      setCategories((prevState) => [...prevState, item.name]);
+    });
+  }, [recivedCategories]);
 
   if (isLoadingS) {
     return (
@@ -997,6 +1055,11 @@ const Dashboard = (props) => {
                       data={radarData}
                       options={{
                         responsive: true,
+                        plugins: {
+                          legend: {
+                            display: showLegend,
+                          },
+                        },
                         scales: {
                           r: {
                             suggestedMin: 0,
@@ -1019,6 +1082,7 @@ const Dashboard = (props) => {
                   setValuesq1([]);
                   setValuesOpen([]);
                   setValuesOpen1([]);
+                  setCategories([]);
                   setCompare(false);
                 }}
                 type="primary"
