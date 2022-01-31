@@ -254,6 +254,7 @@ const QuestionsList = (props) => {
               {question.Text}
               <br />
               <TextArea
+                maxLength={255}
                 rows={4}
                 onChange={handleSaveComment}
                 id={"comment"}
