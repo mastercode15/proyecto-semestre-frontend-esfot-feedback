@@ -264,8 +264,8 @@ const NewSurveyPage = () => {
           <br />
           <h2>Encuestas creadas exitosamente</h2>
           <br />
-          <h2>Se notificara a los estudiantes</h2>
-          <h2>Gracias !</h2>
+          <h2>Notifica a los estudiantes</h2>
+          <h2>y recibe retroalimentación lo antes posible</h2>
           <Link to={Routes.HOME}>
             <Button
               type="primary"
