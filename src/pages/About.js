@@ -1,10 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Card,
   Col,
   Row,
-  Select,
   Skeleton,
   Table,
   List,
@@ -12,17 +11,18 @@ import {
   Button,
   Avatar,
   Image,
+  Divider,
 } from "antd";
+import { Gauge, RadialBar } from "@ant-design/plots";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSubjectsListChapters } from "../data/useSubjectsListChapters";
 import API from "../data";
 import ShowError from "../components/ShowError";
-import { Bar } from "react-chartjs-2";
+import { Bar, Radar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { FundOutlined, StepBackwardFilled } from "@ant-design/icons";
 import { useAuth } from "../providers/Auth";
 
-const { Option } = Select;
 const { Sider, Content } = Layout;
 Chart.register(...registerables);
 const Dashboard = (props) => {
@@ -37,26 +37,196 @@ const Dashboard = (props) => {
   const [chapterObjective, setChapterObjective] = useState("");
   const [chapterObjectiveToCompare, setChapterObjectiveToCompare] =
     useState("");
+  const [recivedCategories, setRecivedCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [valuesq, setValuesq] = useState([]);
   const [valuesq1, setValuesq1] = useState([]);
   const [valuesOpen, setValuesOpen] = useState([]);
+  const [valuesOpen1, setValuesOpen1] = useState([]);
   const [question, setQuestion] = useState([]);
+  const [questions, setQuestions] = useState([]);
+  const [defaultQuestions, setDefaultQuestions] = useState([]);
+  const [element, setElement] = useState();
+  const [maxangle, setmaxAngle] = useState();
+
+  const finalRes = () => {
+    let res = 0;
+    valuesq.forEach((val) => (res += parseFloat(val)));
+    res = res / 48;
+    res = (res * 100).toFixed(2);
+    return res;
+  };
+
+  const finalResToCompare = () => {
+    let res1 = finalRes();
+    let res = 0;
+    valuesq1.forEach((val) => (res += parseFloat(val)));
+    res = res / 48;
+    res = (res * 100).toFixed(2);
+    if (parseInt(res1) > parseInt(res)) {
+      setmaxAngle(parseInt(res1) * 3.6);
+    } else {
+      setmaxAngle(parseInt(res) * 3.6);
+    }
+    console.log("---------->" + maxangle);
+    return res;
+  };
+
+  const handleCategories = (results) => {
+    let cat1positions = [];
+    let cat2positions = [];
+    let cat3positions = [];
+    let cat4positions = [];
+    let res1 = 0;
+    let res2 = 0;
+    let res3 = 0;
+    let res4 = 0;
+    // eslint-disable-next-line no-unused-expressions
+    question.data?.map((item) => {
+      if (item.category_id === 1) {
+        cat1positions.push(item.id);
+      }
+      if (item.category_id === 2) {
+        cat2positions.push(item.id);
+      }
+      if (item.category_id === 3) {
+        cat3positions.push(item.id);
+      }
+      if (item.category_id === 4) {
+        cat4positions.push(item.id);
+      }
+    });
+
+    cat1positions.map(
+      (item, i) => (res1 = res1 + parseFloat(results[item - 1]))
+    );
+    cat2positions.map(
+      (item, i) => (res2 = res2 + parseFloat(results[item - 1]))
+    );
+    cat3positions.map(
+      (item, i) => (res3 = res3 + parseFloat(results[item - 1]))
+    );
+    cat4positions.map(
+      (item, i) => (res4 = res4 + parseFloat(results[item - 1]))
+    );
+
+    return [
+      parseFloat(res1),
+      parseFloat(res2),
+      parseFloat(res3),
+      parseFloat(res4),
+    ];
+  };
+
+  const ticks = [0, 1 / 3, 2 / 3, 1];
+  const color = ["#F4664A", "#FAAD14", "#30BF78"];
+  const graphRef = useRef(null);
+
+  //data for medidor
+  const medidorConfig = {
+    percent: finalRes() / 100,
+    range: {
+      ticks: [0, 1],
+      color: ["l(0) 0:#F4664A 0.5:#FAAD14 1:#30BF78"],
+    },
+    indicator: {
+      pointer: {
+        style: {
+          stroke: "#D0D0D0",
+        },
+      },
+      pin: {
+        style: {
+          stroke: "#D0D0D0",
+        },
+      },
+    },
+    statistic: {
+      title: {
+        formatter: ({ percent }) => {
+          if (percent < ticks[1]) {
+            return "Bajo(" + finalRes() + " %)";
+          }
+
+          if (percent < ticks[2]) {
+            return "Medio(" + finalRes() + " %)";
+          }
+
+          return "Alto(" + finalRes() + " %)";
+        },
+        style: ({ percent }) => {
+          return {
+            fontSize: "36px",
+            lineHeight: 1,
+            color:
+              percent < ticks[1]
+                ? color[0]
+                : percent < ticks[2]
+                ? color[1]
+                : color[2],
+          };
+        },
+      },
+    },
+    onReady: (plot) => {
+      graphRef.current = plot;
+    },
+  };
+
+  //data for compare the rate of each subject
+
+  const DemoRadialBar = () => {
+    let data = [
+      {
+        alias: "cap. 1",
+        name: chapterName,
+        percent: finalRes() * 1,
+      },
+      {
+        alias: "cap. 2",
+        name: chapterNameToCompare,
+        percent: finalResToCompare() * 1,
+      },
+    ];
+    const config = {
+      data,
+      xField: "name",
+      yField: "percent",
+      xAxis: false,
+      maxAngle: maxangle,
+      radius: 0.8,
+      innerRadius: 0.2,
+      tooltip: {
+        formatter: (datum) => {
+          return {
+            name: "rendimiento",
+            value: datum.percent + "%",
+          };
+        },
+      },
+      colorField: "percent",
+      color: ({ percent }) => {
+        if (percent > 67) {
+          return "#30BF78";
+        } else if (percent > 34) {
+          return "#FAAD14";
+        }
+
+        return "#F4664A";
+      },
+      annotations: data.map((element) => ({
+        type: "html",
+        position: [element.name, 0],
+        html: `<div style="width:65px;transform:translate(-50%, -50%)">
+        ${element.percent}%
+      </div>`,
+      })),
+    };
+    return <RadialBar {...config} />;
+  };
 
   const barValues = {
-    labels: [
-      "El docente desarrolla el Curso de manera ordenada cubriendo todos los temas planteados",
-      "El profesor utiliza los recursos necesarios para que entiendas y aprendas la materia",
-      "El docente finaliza la materia en el tiempo establecido",
-      "Los métodos del profesor te ayudaron a comprender mejor el tema",
-      "El profesor resuelve las dudas de manera clara y precisa",
-      "El profesor relaciona ejemplos reales con temas tratados en clase",
-      "El profesor envía tareas basadas en lo que se ha visto en clase",
-      "El profesor evalúa los conocimientos que ha impartido en la clase",
-      "El profesor da retroalimentación de los trabajos y las pruebas realizados",
-      "El profesor fue motivador y entusiasta",
-      "El profesor genera confianza para que se le pueda realizar preguntas",
-      "El profesor trata a los estudiantes con respeto",
-    ],
+    labels: questions,
     datasets: [
       {
         label: "Ponderación",
@@ -91,22 +261,52 @@ const Dashboard = (props) => {
       },
     ],
   };
+  const singleRadar = {
+    labels: categories,
+    datasets: [
+      {
+        data: handleCategories(valuesq),
+        fill: true,
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        borderColor: "rgb(255, 99, 132)",
+        pointBackgroundColor: "rgb(255, 99, 132)",
+        pointBorderColor: "#fff",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgb(255, 99, 132)",
+      },
+    ],
+  };
+
+  const comparisonRadar = {
+    labels: categories,
+    datasets: [
+      {
+        label: chapterName,
+        data: handleCategories(valuesq),
+        fill: true,
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        borderColor: "rgb(255, 99, 132)",
+        pointBackgroundColor: "rgb(255, 99, 132)",
+        pointBorderColor: "#fff",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgb(255, 99, 132)",
+      },
+      {
+        label: chapterNameToCompare,
+        data: handleCategories(valuesq1),
+        fill: true,
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
+        borderColor: "rgb(54, 162, 235)",
+        pointBackgroundColor: "rgb(54, 162, 235)",
+        pointBorderColor: "#fff",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: "rgb(54, 162, 235)",
+      },
+    ],
+  };
 
   const barValuesComparison = {
-    labels: [
-      "El docente desarrolla el Curso de manera ordenada cubriendo todos los temas planteados",
-      "El profesor utiliza los recursos necesarios para que entiendas y aprendas la materia",
-      "El docente finaliza la materia en el tiempo establecido",
-      "Los métodos del profesor te ayudaron a comprender mejor el tema",
-      "El profesor resuelve las dudas de manera clara y precisa",
-      "El profesor relaciona ejemplos reales con temas tratados en clase",
-      "El profesor envía tareas basadas en lo que se ha visto en clase",
-      "El profesor evalúa los conocimientos que ha impartido en la clase",
-      "El profesor da retroalimentación de los trabajos y las pruebas realizados",
-      "El profesor fue motivador y entusiasta",
-      "El profesor genera confianza para que se le pueda realizar preguntas",
-      "El profesor trata a los estudiantes con respeto",
-    ],
+    labels: defaultQuestions,
     datasets: [
       {
         label: chapterName,
@@ -174,32 +374,48 @@ const Dashboard = (props) => {
   };
 
   let dataChart = {};
+  let colSpan = 24;
+  let scales = {};
+  let radarData = {};
+  let compareTitle = "";
+  let commentsColumnSpan = 24;
+  let showLegend = false;
   if (compare) {
+    compareTitle = `Comentarios para ${chapterName}:`;
     dataChart = barValuesComparison;
+    radarData = comparisonRadar;
+    showLegend = true;
+    colSpan = 19;
+    commentsColumnSpan = 12;
+    scales = {
+      y: {
+        beginAtZero: true,
+      },
+    };
   } else {
+    compareTitle = "Comentarios de estudiantes:";
     dataChart = barValues;
+    radarData = singleRadar;
+    scales = {
+      y: {
+        beginAtZero: true,
+      },
+      x: {
+        ticks: {
+          display: false,
+        },
+      },
+    };
   }
-  const valuesOpen2 = [
-    "HOLA",
-    "Holis",
-    "Holu",
-    "HOLA",
-    "Holis",
-    "Holu",
-    "HOLA",
-    "Holis",
-    "Holu",
-    "HOLA",
-    "Holis",
-    "Holu",
-    "HOLA",
-    "Holis",
-    "Holu",
-  ];
+
   const handleChange = (value) => {
     console.log("aquii:");
-    console.log(value.currentTarget.style.visibility);
-    value.currentTarget.style.visibility = "hidden";
+    console.log(value.currentTarget.parentElement.parentElement);
+    setElement(
+      value.currentTarget.parentElement.parentElement.getAttribute(
+        "data-row-key"
+      )
+    );
   };
 
   const [data, setData] = useState([]);
@@ -255,6 +471,28 @@ const Dashboard = (props) => {
       },
     },
   ];
+
+  const questinList = (
+    <div id="scrollableDiv">
+      <InfiniteScroll
+        dataLength={question.data?.length - 1}
+        scrollableTarget="scrollableDiv"
+      >
+        <List
+          dataSource={question.data}
+          renderItem={(item, i) => (
+            <List.Item>
+              {item.Type === "Cerrada" && `${i + 1}. ${item.Text}`}
+              {item.Type === "Cerrada" && (
+                <Divider className="scrollableDivider" />
+              )}
+            </List.Item>
+          )}
+        />
+      </InfiniteScroll>
+    </div>
+  );
+
   let mychapter = [];
   let chapter2compare = [];
   let totalAnswers = [];
@@ -290,6 +528,7 @@ const Dashboard = (props) => {
 
     const results = async () => {
       mychapter = await API.get(`/chapter/${chapterId}/answers`);
+      setRecivedCategories(await API.get(`/categories`));
       setQuestion(await API.get(`/question`));
     };
 
@@ -436,7 +675,6 @@ const Dashboard = (props) => {
 
     const results = async () => {
       chapter2compare = await API.get(`/chapter/${chapterId}/answers`);
-      setQuestion(await API.get(`/question`));
     };
 
     results()
@@ -490,7 +728,7 @@ const Dashboard = (props) => {
                 q12_1 = q12_1 + parseFloat(answer.Value);
                 tq12_1 = tq12_1 + 1;
               } else if (answer.FK_idQuestion == 13) {
-                setValuesOpen((oldArray) => [...oldArray, answer.Value]);
+                setValuesOpen1((oldArray) => [...oldArray, answer.Value]);
               } else {
                 console.log("No question");
               }
@@ -578,6 +816,25 @@ const Dashboard = (props) => {
     }
   }, [chapterBySubjects, isLoadingS]);
 
+  useEffect(() => {
+    // eslint-disable-next-line no-unused-expressions
+    question.data?.map((item, i) => {
+      // eslint-disable-next-line no-unused-expressions
+      console.log(item);
+      if (item.Type === "Cerrada") {
+        setQuestions((prevState) => [...prevState, item.Text]);
+        setDefaultQuestions((prevState) => [...prevState, `Pregunta ${i + 1}`]);
+      }
+    });
+  }, [question]);
+
+  useEffect(() => {
+    // eslint-disable-next-line no-unused-expressions
+    recivedCategories.data?.map((item) => {
+      setCategories((prevState) => [...prevState, item.name]);
+    });
+  }, [recivedCategories]);
+
   if (isLoadingS) {
     return (
       <Row justify="center" gutter={30}>
@@ -601,7 +858,7 @@ const Dashboard = (props) => {
     return (
       <>
         <Layout>
-          <Sider>
+          <Sider breakpoint={"md"} style={{ textAlign: "center" }}>
             <div>
               {currentUser.profileimage === "" ? (
                 <Avatar
@@ -628,13 +885,26 @@ const Dashboard = (props) => {
                         {subjectName} | {subjectNameToCompare}
                       </h3>
                     </Col>
+                    <Col span={24}>
+                      <h3> Capítulos Comparados</h3>
+                    </Col>
+                    <Col span={24}>
+                      <h3>
+                        {chapterName} | {chapterNameToCompare}
+                      </h3>
+                    </Col>
                   </Row>
                   <Row style={{ justifyContent: "space-between" }}>
                     <Col xs={24} md={11} style={{ textAlign: "justify" }}>
-                      <h3> Objetivo materia 1: {chapterObjective}</h3>
+                      <h3>
+                        Objetivo ({chapterName}): {chapterObjective}
+                      </h3>
                     </Col>
                     <Col xs={24} md={11} style={{ textAlign: "justify" }}>
-                      <h3> Objetivo materia 2: {chapterObjectiveToCompare}</h3>
+                      <h3>
+                        Objetivo ({chapterNameToCompare}):{" "}
+                        {chapterObjectiveToCompare}
+                      </h3>
                     </Col>
                   </Row>
                 </div>
@@ -646,10 +916,10 @@ const Dashboard = (props) => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col span={12}>
+                    <Col xs={24} md={12}>
                       <h3> Capítulo: {chapterName}</h3>
                     </Col>
-                    <Col span={12}>
+                    <Col xs={24} md={12}>
                       <h3> Objetivo: {chapterObjective}</h3>
                     </Col>
                   </Row>
@@ -657,10 +927,15 @@ const Dashboard = (props) => {
               )}
               {!compare && (
                 <Button
-                  onClick={() => {
+                  onClick={async () => {
                     setDashboard(false);
-                    setQuestion([]);
                     setCompare(true);
+                    await document.querySelector(
+                      `tr[data-row-key="${element}"]`
+                    );
+                    document
+                      .querySelector(`tr[data-row-key="${element.toString()}"]`)
+                      .remove();
                   }}
                   type="primary"
                   icon={<FundOutlined />}
@@ -670,68 +945,144 @@ const Dashboard = (props) => {
                 </Button>
               )}
               <div>
-                <Bar
-                  data={dataChart}
-                  options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                      yAxes: [
-                        {
-                          ticks: {
-                            beginAtZero: true,
+                <Divider />
+                <Row>
+                  {compare && (
+                    <Col xs={24} md={5}>
+                      <h4>Preguntas:</h4>
+                      {questinList}
+                    </Col>
+                  )}
+                  <Col
+                    xs={24}
+                    md={colSpan}
+                    style={{ height: "100% !important" }}
+                  >
+                    <Bar
+                      data={dataChart}
+                      options={{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: scales,
+                        title: {
+                          display: true,
+                          text: "Ponderación de preguntas",
+                          fontSize: 20,
+                        },
+                        legend: {
+                          display: true,
+                          position: "right",
+                        },
+                      }}
+                    />
+                  </Col>
+                </Row>
+                <br />
+                <Row style={{ justifyContent: "space-between" }}>
+                  <Col xs={24} md={commentsColumnSpan}>
+                    <h4>{compareTitle}</h4>
+                    <div
+                      style={{
+                        overflow: "auto",
+                        padding: "5px 5px",
+                      }}
+                    >
+                      {valuesOpen.length != 0 ? (
+                        <InfiniteScroll
+                          dataLength={valuesOpen.length}
+                          hasMore={data.length < 3}
+                          scrollableTarget="scrollableDiv"
+                        >
+                          <List
+                            size="small"
+                            bordered
+                            dataSource={valuesOpen}
+                            renderItem={(item) => <List.Item>{item}</List.Item>}
+                          />
+                        </InfiniteScroll>
+                      ) : null}
+                    </div>
+                  </Col>
+                  {compare && (
+                    <Col xs={24} md={12}>
+                      <h4> Comentarios para {chapterNameToCompare}:</h4>
+                      <div
+                        style={{
+                          overflow: "auto",
+                          padding: "5px 5px",
+                        }}
+                      >
+                        {valuesOpen1.length != 0 ? (
+                          <InfiniteScroll
+                            dataLength={valuesOpen.length}
+                            hasMore={data.length < 3}
+                            scrollableTarget="scrollableDiv"
+                          >
+                            <List
+                              size="small"
+                              bordered
+                              dataSource={valuesOpen1}
+                              renderItem={(item) => (
+                                <List.Item>{item}</List.Item>
+                              )}
+                            />
+                          </InfiniteScroll>
+                        ) : null}
+                      </div>
+                    </Col>
+                  )}
+                </Row>
+                <br />
+                <Row style={{ justifyContent: "space-evenly" }}>
+                  {compare ? (
+                    <Col xs={24} md={11}>
+                      <h2>Comparación de rendimiento</h2>
+                      <h4>
+                        Pasa el cursor por la barra para saber conocer mas
+                        información
+                      </h4>
+                      <DemoRadialBar />
+                    </Col>
+                  ) : (
+                    <Col xs={24} md={11}>
+                      <h2>Rendimiento General</h2>
+                      <Gauge {...medidorConfig} />
+                    </Col>
+                  )}
+                  <Col xs={24} md={11}>
+                    <h2>Rendimiento por categoría</h2>
+                    <Radar
+                      data={radarData}
+                      options={{
+                        responsive: true,
+                        plugins: {
+                          legend: {
+                            display: showLegend,
                           },
                         },
-                      ],
-                      x: {
-                        ticks: {
-                          display: false,
+                        scales: {
+                          r: {
+                            suggestedMin: 0,
+                            suggestedMax: 12,
+                          },
                         },
-                      },
-                    },
-                    title: {
-                      display: true,
-                      text: "Ponderación de preguntas",
-                      fontSize: 20,
-                    },
-                    legend: {
-                      display: true,
-                      position: "right",
-                    },
-                  }}
-                />
-              </div>
-
-              <h4> Preguntas abiertas: </h4>
-              <div
-                style={{
-                  overflow: "auto",
-                  padding: "5px 5px",
-                  height: "225px",
-                }}
-              >
-                {valuesOpen.length != 0 ? (
-                  <InfiniteScroll
-                    dataLength={valuesOpen.length}
-                    hasMore={data.length < 3}
-                    scrollableTarget="scrollableDiv"
-                  >
-                    <List
-                      size="small"
-                      bordered
-                      dataSource={valuesOpen}
-                      renderItem={(item) => <List.Item>{item}</List.Item>}
+                      }}
                     />
-                  </InfiniteScroll>
-                ) : null}
+                  </Col>
+                </Row>
               </div>
 
               <Button
                 onClick={() => {
                   setDashboard(false);
                   setQuestion([]);
+                  setQuestions([]);
+                  setDefaultQuestions([]);
                   setValuesq([]);
+                  setValuesq1([]);
                   setValuesOpen([]);
+                  setValuesOpen1([]);
+                  setCategories([]);
                   setCompare(false);
                 }}
                 type="primary"
@@ -766,7 +1117,7 @@ const Dashboard = (props) => {
     return (
       <>
         <Layout>
-          <Sider>
+          <Sider breakpoint={"md"} style={{ textAlign: "center" }}>
             <div>
               {currentUser.profileimage === "" ? (
                 <Avatar
@@ -787,9 +1138,10 @@ const Dashboard = (props) => {
               columns={columns}
               dataSource={data}
               pagination={{
-                defaultPageSize: 5,
+                position: ["topLeft"],
+                defaultPageSize: 30,
                 showSizeChanger: true,
-                pageSizeOptions: ["5", "10", "20"],
+                pageSizeOptions: ["5", "10", "20", "30"],
               }}
             />
           </Content>
